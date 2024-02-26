@@ -39,8 +39,10 @@
           <li class="dropdown"><a href="#"><span>Services</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Maintenance</a></li>
-              <li><a href="#">Auto Repairkjfsj</a></li>
+              <li><a href="#">Auto Repair</a></li>
               <li><a href="#">Tune Ups</a></li>
+              <li><a href="#">Tune Ups</a></li>
+
               <!-- <li class="dropdown"><a href="#"><span>Services We Offer</span> <i class="bi bi-chevron-right"></i></a> -->
                   <ul> 
                 </ul>
