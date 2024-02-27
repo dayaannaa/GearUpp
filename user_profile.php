@@ -120,7 +120,21 @@
 
         </div>
     </header>
-    <h1>User Profile</h1>
+
+    <section class="breadcrumbs">
+      <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>Profile</h2>
+          <ol>
+            <li><a href="ui.php">Home</a></li>
+            <li>Profile</li>
+          </ol>
+        </div>
+
+      </div>
+    </section>
+
     <form action="user_profile_update.php" method="post" enctype="multipart/form-data">
         <img src="<?php echo $row['user_image']; ?>" alt="User Image" width="150"><?php echo $row['first_name'] . " " . $row['last_name']; ?><br>
 

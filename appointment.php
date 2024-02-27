@@ -90,9 +90,9 @@
             </form>
         </div>
     </div>
-</div></p>
-      </div>
-    </section>
+    </div></p>
+    </div>
+</section>
 
   </main>
 
