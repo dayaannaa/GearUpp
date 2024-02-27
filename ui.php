@@ -25,51 +25,9 @@
 </head>
 
 <body>
-  <header id="header" class="fixed-top ">
-    <div class="container d-flex align-items-center justify-content-lg-between">
-
-      <h1 class="logo me-auto me-lg-0"><a href="ui.php">GearUp<span>.</span></a></h1>
-      <!-- <a href="index.html" class="logo me-auto me-lg-0"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-
-      <nav id="navbar" class="navbar order-last order-lg-0">
-        <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-          <!-- <li><a class="nav-link scrollto" href="#team">About</a></li> -->
-          <li><a class="nav-link scrollto " href="#">Products</a></li>
-          <li><a class="nav-link scrollto" href="resources.php">Resources</a></li>
-          <li class="dropdown"><a href="#"><span>Services</span> <i class="bi bi-chevron-down"></i></a>
-            <ul>
-              <li class="dropdown"><a href="#"><span>Maintenance</span><i class="bi bi-chevron-down"></i></a>
-              <ul>
-                  <li><a href="#">Change Oil</a></li>
-                  <li><a href="#">Battery Replacement</a></li>
-                  <li><a href="#">Brake Replacement</a></li>
-                  <li><a href="#">Airconditioning</a></li>
-              </ul>
-              <li><a href="#">Auto Repair</a></li>
-              <li><a href="#">Tune Ups</a></li>
-              <li class="dropdown"><a href="#"><span>Tires</span> <i class="bi bi-chevron-down"></i></a>
-              <ul>
-                  <li><a href="#">Tire Replacement</a></li>
-                  <li><a href="#">Wheel Alignment</a></li>
-                  <li><a href="#">Tire Rotation</a></li>
-              </ul>
-              <!-- <li class="dropdown"><a href="#"><span>Services We Offer</span> <i class="bi bi-chevron-right"></i></a> -->
-                  <ul> 
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li><a class="nav-link scrollto" href="#">Reviews</a></li>
-          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-          <li><a class="nav-link scrollto" href="user_profile.php"><i class="fa-solid fa-user"></i></a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav>
-      <a href="appointment.php" class="get-started-btn scrollto">Book an Appointment</a>
-
-    </div>
-  </header>
+  <?php
+  include "header.html";
+  ?>
 
   <!-- ======= Hero Section ======= -->
   <section id="hero" class="d-flex align-items-center justify-content-center">
@@ -182,7 +140,7 @@
       </div> -->
     </section><!-- End Services Section -->
 
-    <!-- ======= Portfolio Section ======= -->
+       <!-- ======= Portfolio Section ======= -->
     <section id="portfolio" class="portfolio">
       <div class="container" data-aos="fade-up">
 
@@ -191,7 +149,7 @@
           <p>Spare Parts</p>
         </div>
 
-        <!-- <div class="row" data-aos="fade-up" data-aos-delay="100">
+        <!--<div class="row" data-aos="fade-up" data-aos-delay="100">
           <div class="col-lg-12 d-flex justify-content-center">
             <ul id="portfolio-flters">
               <li data-filter="*" class="filter-active">All</li>
@@ -332,8 +290,8 @@
 
         </div>
 
-      </div> -->
-    </section><!-- End Portfolio Section -->
+      </div> 
+    </section>End Portfolio Section -->
 
     <!-- ======= Team Section ======= -->
     <section id="team" class="team">
