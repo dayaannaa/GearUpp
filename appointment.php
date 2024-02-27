@@ -22,39 +22,9 @@
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
 <body>
-  <header id="header" class="fixed-top header-inner-pages bg-black">
-    <div class="container d-flex align-items-center justify-content-lg-between">
-
-    <h1 class="logo me-auto me-lg-0"><a href="ui.php">GearUp<span>.</span></a></h1>
-      <!-- <a href="index.html" class="logo me-auto me-lg-0"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-
-      <nav id="navbar" class="navbar order-last order-lg-0">
-        <ul>
-          <li><a class="nav-link scrollto" href="ui.php">Home</a></li>
-          <!-- <li><a class="nav-link scrollto" href="#team">About</a></li> -->
-          <li><a class="nav-link scrollto" href="#">Products</a></li>
-          <li><a class="nav-link scrollto" href="resources.php">Resources</a></li>
-          <li class="dropdown"><a href="#"><span>Services</span> <i class="bi bi-chevron-down"></i></a>
-            <ul>
-              <li><a href="#">Maintenance</a></li>
-              <li><a href="#">Auto Repair</a></li>
-              <li><a href="#">Tune Ups</a></li>
-              <!-- <li class="dropdown"><a href="#"><span>Services We Offer</span> <i class="bi bi-chevron-right"></i></a> -->
-                  <ul> 
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li><a class="nav-link scrollto" href="#">Reviews</a></li>
-          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-          <li><a class="nav-link scrollto" href="user_profile.php">Profile</a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav>
-      <a href="appointment.php" class="get-started-btn scrollto">Book an Appointment</a>
-
-    </div>
-  </header>
+  <?php
+  include "header.html";
+  ?>
 
   <main id="main">
 
