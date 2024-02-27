@@ -34,19 +34,13 @@
         <ul>
           <li><a class="nav-link scrollto" href="ui.php">Home</a></li>
           <!-- <li><a class="nav-link scrollto" href="#team">About</a></li> -->
-          <li><a class="nav-link scrollto" href="#portfolio">Products</a></li>
+          <li><a class="nav-link scrollto" href="#">Products</a></li>
           <li><a class="nav-link scrollto" href="resources.php">Resources</a></li>
           <li class="dropdown"><a href="#"><span>Services</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Maintenance</a></li>
               <li><a href="#">Auto Repair</a></li>
               <li><a href="#">Tune Ups</a></li>
-              <li><a href="#">Tune Ups</a></li>
-<<<<<<< HEAD
-=======
-              <li><a href="#">Tune Ups</a></li>
-
->>>>>>> 1c1d55d0116503ff3da73382c50de59505fcb448
               <!-- <li class="dropdown"><a href="#"><span>Services We Offer</span> <i class="bi bi-chevron-right"></i></a> -->
                   <ul> 
                 </ul>
@@ -70,7 +64,7 @@
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-          <h2>Book an Appointment</h2>
+          <h2>Schedule an Appointment</h2>
           <ol>
             <li><a href="ui.php">Home</a></li>
             <li>Appointment</li>

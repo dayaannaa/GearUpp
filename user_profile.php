@@ -105,8 +105,8 @@
     <label for="email">Email:</label><br>
     <input type="email" id="email" name="email" value="<?php echo $row['email']; ?>" readonly><br>
     
-    <label for="phone_number">Phone Number:</label><br>
-    <input type="text" id="phone_number" name="phone_number" value="<?php echo $row['phone_number']; ?>"><br>
+    <label for="phone">Phone Number:</label><br>
+    <input type="text" id="phone" name="phone" value="<?php echo $row['phone']; ?>"><br>
 
     <label for="address">Address:</label><br>
     <input type="text" id="address" name="address" value="<?php echo $row['address']; ?>"><br>

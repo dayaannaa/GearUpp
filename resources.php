@@ -34,7 +34,7 @@
         <ul>
           <li><a class="nav-link scrollto" href="ui.php">Home</a></li>
           <!-- <li><a class="nav-link scrollto" href="#team">About</a></li> -->
-          <li><a class="nav-link scrollto" href="#">Products</a></li>
+          <li><a class="nav-link scrollto" href="">Products</a></li>
           <li><a class="nav-link scrollto active" href="resources.php">Resources</a></li>
           <li class="dropdown"><a href="#"><span>Services</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
