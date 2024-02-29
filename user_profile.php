@@ -167,13 +167,9 @@
         <a href="logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
     </div>
 
-    <footer id="footer">
-    <div class="container">
-      <div class="copyright">
-        &copy; Copyright <strong><span>GearUp</span></strong>. All Rights Reserved
-      </div>
-    </div>
-    </footer>
+    <?php
+    include "footer.html";
+    ?>
 
     <div id="preloader"></div>
 

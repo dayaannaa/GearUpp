@@ -83,7 +83,7 @@
     
         if ($admin_result->num_rows > 0) {
             $_SESSION['admin_id'] = $username; 
-            header("Location: admin_dashboard.php");
+            header("Location: ui.php");
         } elseif ($customer_result->num_rows > 0) {    
             $customer_row = $customer_result->fetch_assoc();
             $_SESSION['user_id'] = $customer_row['user_id'];

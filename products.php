@@ -52,13 +52,9 @@
 
   </main>
 
-  <footer id="footer">
-    <div class="container">
-      <div class="copyright">
-        &copy; Copyright <strong><span>GearUp</span></strong>. All Rights Reserved
-      </div>
-    </div>
-  </footer>
+  <?php
+  include "footer.html";
+  ?>
 
   <div id="preloader"></div>
 
