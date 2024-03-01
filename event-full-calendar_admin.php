@@ -15,22 +15,54 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
 </head>
 <body>
-<!-- <?php
+<?php
+include "header.html";
+?>
+ <?php
   /* session_start();
   if (!isset($_SESSION['admin_id'])) {
       header("Location: user_login.php");
       exit();
   } */
-?> -->
+?>
+
+<main id="main">
+
+<section class="breadcrumbs">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <h2>SCHEDULE AN APPOINTMENT</h2>
+      <ol>
+        <li><a href="ui.php">Home</a></li>
+        <li>Appointment</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+
 <div class="container">
     <div class="row">
         <div class="col-lg-9">
-            <h5 align="center">Appointment</h5>
+            <!-- <h5 align="center">Appointment</h5> -->
+            <br>
             <div id="calendar"></div>
         </div>
         <div class="col-lg-3">
+            <br>
             <h5 align="center">Legend</h5>
             <div class="legend">
                 <div class="legend-item">
@@ -147,8 +179,11 @@
 </div>
 <!-- End edit event popup dialog box -->
 
-
+</main>
 <br>
+<?php
+include "footer.html";
+?>
 </body>
 <script>
 $(document).ready(function() {
