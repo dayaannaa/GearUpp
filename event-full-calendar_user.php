@@ -15,8 +15,21 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
 </head>
 <body>
+<?php
+    include "header.html";
+?>
 <!-- <?php
   /* session_start();
   if (!isset($_SESSION['user_id'])) {
@@ -24,13 +37,31 @@
       exit();
   } */
 ?> -->
+<main id="main">
+
+<section class="breadcrumbs">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <h2>SCHEDULE AN APPOINTMENT</h2>
+      <ol>
+        <li><a href="ui.php">Home</a></li>
+        <li>Appointment</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+
 <div class="container">
     <div class="row">
         <div class="col-lg-9">
-            <h5 align="center">Appointment</h5>
+            <!-- <h5 align="center">Appointment</h5> -->
+            <br>
             <div id="calendar"></div>
         </div>
         <div class="col-lg-3">
+            <br>
             <h5 align="center">Legend</h5>
             <div class="legend">
                 <div class="legend-item">
@@ -42,7 +73,7 @@
             </div>
             <div class="col-lg-3">
                 <br>
-            <h5 align="center">Holidays</h5>
+            <!-- <h5 align="center">Holidays</h5> -->
             <div class="legend">
                 <div class="holiday-item">
 
@@ -61,42 +92,44 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="img-container">
-                    <div class="row">
-                        <div class="col-sm-12">  
-                            <div class="form-group">
-                                <label for="event_name">Status</label>
-                                <select name="event_name" id="event_name" class="form-control">
-                                    <option value="Fully Booked">No Slots</option>
-                                    <option value="Available">Fully Booked</option>
-                                    <option value="No Slots">Holiday</option>
-                                    <option value="Holidays">Available</option>
-                                </select>
-                            </div>
-                        </div>
+    <div class="row">
+            <form action="">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="First Name">
                     </div>
-                    <div class="form-group">
-                        <label for="event_color">Color</label>
-                        <input type="text" name="event_color" id="event_color" class="form-control" placeholder="Pick a color">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="Last Name">
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6">  
-                            <div class="form-group">
-                                <label for="event_start_date">Status Start</label>
-                                <input type="date" name="event_start_date" id="event_start_date" class="form-control onlydatepicker" placeholder="Event start date">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">  
-                            <div class="form-group">
-                                <label for="event_end_date">Status End</label>
-                                <input type="date" name="event_end_date" id="event_end_date" class="form-control" placeholder="Event end date">
-                            </div>
-                        </div>
+                    <div class="col-md-6">
+                        <input type="tel" class="form-control" placeholder="Phone Number">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="email" class="form-control" placeholder="Enter Email">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="date" class="form-control" placeholder="Enter Date">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="time" class="form-control" placeholder="Enter Email">
+                    </div>
+                    <div class="col-12">
+                        <select class="form-select">
+                            <option selected>Purpose Of Appointment</option>
+                            <option value="1">Web Design</option>
+                            <option value="2">Web Development</option>
+                            <option value="3">IOS Developemt</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <textarea class="form-control" placeholder="Message"></textarea>
                     </div>
                 </div>
-            </div>
+            </form>
+        </div>
+    </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="save_event()">Save Event</button>
+                <button type="button" class="btn btn-primary" onclick="save_event()">Schedule</button>
             </div>
         </div>
     </div>
@@ -104,6 +137,11 @@
 <!-- End popup dialog box -->
 
 <br>
+</main>
+<br>
+<?php
+    include "footer.html";
+?>
 </body>
 <script>
 $(document).ready(function() {

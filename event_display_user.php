@@ -10,7 +10,7 @@ if ($count > 0) {
         $data_arr[$i]['event_id'] = $data_row['event_id'];
         $data_arr[$i]['title'] = $data_row['event_name'];
         $data_arr[$i]['start'] = date("Y-m-d", strtotime($data_row['event_start_date']));
-        $data_arr[$i]['end'] = date("Y-m-d", strtotime($data_row['event_end_date'])); 
+        $data_arr[$i]['end'] = date("Y-m-d", strtotime($data_row['event_end_date']));
         $data_arr[$i]['color'] = $data_row['event_color'];
         $data_arr[$i]['url'] = '';
         $i++;
