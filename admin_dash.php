@@ -50,13 +50,13 @@
             <i class="ri-calendar-todo-line"></i>
             <h3><a href="">pa aq</a></h3>
           </div>
-        </div>
+        </div>  
         <div class="col-xl-2 col-md-4">
           <div class="icon-box">
             <i class="ri-paint-brush-line"></i>
             <h3><a href="">maisip</a></h3>
           </div>
-        </div>
+        </div>  
         <div class="col-xl-2 col-md-4">
           <div class="icon-box">
             <i class="ri-database-2-line"></i>
