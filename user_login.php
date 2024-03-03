@@ -57,9 +57,9 @@
 	</section>
 
 	<script src="js/jquery.min.js"></script>
-  <script src="js/popper.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/main.js"></script>
+	<script src="js/popper.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/main.js"></script>
 
   <?php
     session_start(); 
@@ -83,7 +83,7 @@
     
         if ($admin_result->num_rows > 0) {
             $_SESSION['admin_id'] = $username; 
-            header("Location: ui.php");
+            header("Location: .php");
         } elseif ($customer_result->num_rows > 0) {    
             $customer_row = $customer_result->fetch_assoc();
             $_SESSION['user_id'] = $customer_row['user_id'];
