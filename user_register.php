@@ -100,11 +100,11 @@
             $stmt->bind_param("sssssss", $first_name, $last_name, $phone, $address, $city, $email, $password);
 
             if ($stmt->execute()) {
-                echo '<div class="alert alert-success" role="alert">Registration successful!</div>';
+				header('Location: user_login.php');
+				echo '<div class="alert alert-success" role="alert">Registration successful!</div>';
             } else {
                 echo '<div class="alert alert-danger" role="alert">Error: ' . $conn->error . '</div>';
             }
-
             $stmt->close();
         } else {
             echo '<div class="alert alert-warning" role="alert">Please fill all the fields.</div>';

@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("sssssi", $first_name, $last_name, $address, $city, $user_image_path, $user_id);
 
     if ($stmt->execute()) {
-        echo "Profile updated successfully.";
+        header("Refresh:0; url=user_profile.php");
     } else {
         echo "Error updating profile: " . $conn->error;
     }

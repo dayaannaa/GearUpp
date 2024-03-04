@@ -1,3 +1,27 @@
+<?php
+require 'connection.php';
+session_start();
+  if (!isset($_SESSION['admin_id'])) {
+      header("Location: user_login.php");
+      exit();
+  }
+  
+  // Fetch legend items from the database
+// $sql = "SELECT * FROM legends";
+// $result = $conn->query($sql);
+
+// // Check if there are any legend items
+// if ($result->num_rows > 0) {
+//     // Output legend items dynamically
+//     while($row = $result->fetch_assoc()) {
+//         echo '<div class="legend-item">';
+//         echo '<div class="legend-color" style="background-color: ' . $row["color"] . ';">' . $row["name"] . '</div>';
+//         echo '</div>';
+//     }
+// } else {
+//     echo "No legend items found.";
+// }
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +39,16 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<style>
+        .fc-event {
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Add transition effect */
+}
+
+    .fc-event:hover {
+    transform: translateY(-5px) scale(1.5); /* Translate and scale on hover */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); /* Optional: Add shadow effect */
+} 
+</style>
 </head>
 <body>
 <!-- <?php
@@ -34,10 +68,11 @@
             <h5 align="center">Legend</h5>
             <div class="legend">
                 <div class="legend-item">
-                    <div class="legend-color" style="background-color: #007bff; color: white;">NO SLOTS</div>
+                <div class="legend-color" style="background-color: #007bff; color: white;">NO SLOTS</div>
+                    <div class="legend-color" style="background-color: #ffc107; ">PENDING</div>
+                    <div class="legend-color" style="background-color: #ff6767; ">BOOKED</div>
+                    <div class="legend-color" style="background-color: #d6d6d6; ">HOLIDAY</div>
                     <div class="legend-color" style="background-color: #52f222; ">AVAILABLE</div>
-                    <div class="legend-color" style="background-color: #dc3545; color: white;">FULLY BOOKED</div>
-                    <div class="legend-color" style="background-color: #ffc107; ">HOLIDAY</div>
                 </div>
             </div>
         </div>
@@ -46,7 +81,7 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel">Add Date Status</h5>
+                <h5 class="modal-title" id="modalLabel">Add Slot</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">X</span>
                 </button>
@@ -58,10 +93,11 @@
                             <div class="form-group">
                                 <label for="event_name">Status</label>
                                 <select name="event_name" id="event_name" class="form-control">
-                                    <option value="Fully Booked">No Slots</option>
-                                    <option value="Available">Fully Booked</option>
-                                    <option value="No Slots">Holiday</option>
-                                    <option value="Holidays">Available</option>
+                                    <option value="No Slots">No Slots</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Booked">Booked</option>
+                                    <option value="Holiday">Holiday</option>
+                                    <option value="Available">Available</option>
                                 </select>
                             </div>
                         </div>
@@ -71,19 +107,33 @@
                         <input type="text" name="event_color" id="event_color" class="form-control" placeholder="Pick a color">
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">  
-                            <div class="form-group">
-                                <label for="event_start_date">Status Start</label>
-                                <input type="date" name="event_start_date" id="event_start_date" class="form-control onlydatepicker" placeholder="Event start date">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">  
-                            <div class="form-group">
-                                <label for="event_end_date">Status End</label>
-                                <input type="date" name="event_end_date" id="event_end_date" class="form-control" placeholder="Event end date">
-                            </div>
+                    <div class="col-sm-6">  
+                        <div class="form-group">
+                            <label for="event_start_date">Start Date</label>
+                            <input type="date" name="event_start_date" id="event_start_date" class="form-control onlydatepicker" placeholder="Event start date">
                         </div>
                     </div>
+                    <div class="col-sm-6">  
+                        <div class="form-group">
+                            <label for="event_start_time">Start Time</label>
+                            <input type="time" name="event_start_time" id="event_start_time" class="form-control" placeholder="Event start time">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">  
+                        <div class="form-group">
+                            <label for="event_end_date">End Date</label>
+                            <input type="date" name="event_end_date" id="event_end_date" class="form-control" placeholder="Event end date">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">  
+                        <div class="form-group">
+                            <label for="event_end_time">End Time</label>
+                            <input type="time" name="event_end_time" id="event_end_time" class="form-control" placeholder="Event end time">
+                        </div>
+                    </div>
+                </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -99,7 +149,7 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel">Edit Status</h5>
+                <h5 class="modal-title" id="modalLabel">Edit Slot</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">X</span>
                 </button>
@@ -107,16 +157,17 @@
             <div class="modal-body">
                 <div class="img-container">
                     <div class="form-group">
-                        <label for="edit_event_id">Event ID:</label>
+                        <label for="edit_event_id">Slot ID:</label>
                         <input type="text" name="edit_event_id" id="edit_event_id" class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label for="edit_event_name">Status:</label>
                         <select name="edit_event_name" id="edit_event_name" class="form-control">
-                            <option value="No Slots">No Slots</option>
-                            <option value="Fully Booked">Fully Booked</option>
-                            <option value="Holiday">Holiday</option>
-                            <option value="Available">Available</option>
+                                    <option value="No Slots">No Slots</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Booked">Booked</option>
+                                    <option value="Holiday">Holiday</option>
+                                    <option value="Available">Available</option>
                         </select>                   
                      </div>
                     <div class="form-group">
@@ -126,8 +177,14 @@
                     <div class="row">
                         <div class="col-sm-6">  
                             <div class="form-group">
-                                <label for="edit_event_start_date">Event Start:</label>
+                                <label for="edit_event_start_date">Start Date:</label>
                                 <input type="date" name="edit_event_start_date" id="edit_event_start_date" class="form-control" placeholder="Event start date">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">  
+                            <div class="form-group">
+                                <label for="edit_event_start_time">Start Time</label>
+                                <input type="input" name="edit_event_start_time" id="edit_event_start_time" class="form-control" placeholder="Event start time">
                             </div>
                         </div>
                         <div class="col-sm-6">  
@@ -136,10 +193,17 @@
                                 <input type="date" name="edit_event_end_date" id="edit_event_end_date" class="form-control" placeholder="Event end date">
                             </div>
                         </div>
+                        <div class="col-sm-6">  
+                        <div class="form-group">
+                            <label for="edit_event_end_time">End Time</label>
+                            <input type="input" name="edit_event_end_time" id="edit_event_end_time" class="form-control" placeholder="Event end time">
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="delete_event()">Delete Event</button>
                 <button type="button" class="btn btn-primary" onclick="update_event()">Update Event</button>
             </div>
         </div>
@@ -168,6 +232,8 @@ function display_events() {
                     title: result[i].title,
                     start: result[i].start,
                     end: result[i].end,
+                    event_start_time: result[i].event_start_time,
+                    event_end_time: result[i].event_end_time,
                     color: result[i].color,
                     url: result[i].url
                 }); 	
@@ -182,25 +248,35 @@ function display_events() {
                 select: function(start, end) {
                     $('#event_start_date').val(moment(start).format('YYYY-MM-DD'));
                     $('#event_end_date').val(moment(end).format('YYYY-MM-DD'));
+                    $('#event_start_time').val(moment(event.event_start_time).format('HH:mm'));
+                    $('#event_end_time').val(moment(event.event_end_time).format('HH:mm'));
                     $('#event_entry_modal').modal('show');
                 },
                 events: events,
                 eventRender: function(event, element, view) { 
-                    element.bind('click', function() {
-                    $('#edit_event_id').val(event.event_id); // Set the event ID
+                element.bind('click', function() {
+                    $('#edit_event_id').val(event.event_id);
                     $('#edit_event_name').val(event.title);
                     $('#edit_event_start_date').val(moment(event.start).format('YYYY-MM-DD'));
                     $('#edit_event_end_date').val(moment(event.end).format('YYYY-MM-DD'));
+                    
+                    if (event.event_start_time && event.event_end_time) {
+                        var startTime = moment(event.event_start_time, 'HH:mm').format('hh:mm A');
+                        var endTime = moment(event.event_end_time, 'HH:mm').format('hh:mm A');
+                        // alert(startTime + " " + endTime);
+                        $('#edit_event_start_time').val(startTime);
+                        $('#edit_event_end_time').val(endTime);
+                    } else {
+                        $('#edit_event_start_time').val('N/A');
+                        $('#edit_event_end_time').val('N/A');
+                    }
                     $('#edit_event_color').val(event.color);
                     $('#edit_event_modal').modal('show');
-});
-
+                });
             }
             });
-                    // Get the most recent event name
                     var recentEventName = result[result.length - 1].title;
 
-                    // Set the selected option in the dropdown
                     $('#event_name').val(recentEventName);
         },
         error: function (xhr, status) {
@@ -214,17 +290,17 @@ function display_events() {
         showInput: true,
         showPalette: true,
         palette: [
-            ['#007bff', '#dc3545', '#ffc107', '#52f222',]
+            ['#007bff', '#ffc107',  '#ff6767', '#d6d6d6' , '#52f222',]
         ]
     });
 
     $('#edit_event_color').spectrum({
-        color: "#007bff",
+        color: color,
         preferredFormat: "hex",
         showInput: true,
         showPalette: true,
         palette: [
-            ['#007bff', '#dc3545', '#ffc107', '#52f222',]
+            ['#007bff', '#ffc107',  '#ff6767', '#d6d6d6' , '#52f222',]
         ]
     });
 }
@@ -233,10 +309,12 @@ function save_event() {
     var event_name = $("#event_name").val();
     var event_start_date = $("#event_start_date").val();
     var event_end_date = $("#event_end_date").val();
+    var event_start_time = moment($("#event_start_time").val(), ["h:mm A"]).format("HH:mm");
+    var event_end_time = moment($("#event_end_time").val(), ["h:mm A"]).format("HH:mm");
     var event_color = $("#event_color").val();
 
-    if (event_name == "" || event_start_date == "" || event_end_date == "" || event_color == "") {
-        alert("Please enter all required details.");
+    if (event_name == "" || event_start_date == "" || event_end_date == "" || event_color == "" || event_start_time == "" || event_end_time == "") {
+        alert("Please fill in all fields.");
         return false;
     }
 
@@ -245,14 +323,51 @@ function save_event() {
         type: "POST",
         dataType: 'json',
         data: {
-            
             event_name: event_name,
             event_start_date: event_start_date,
             event_end_date: event_end_date,
-            event_color: event_color
+            event_start_time: event_start_time,
+            event_end_time: event_end_time,
+            event_color: event_color,
         },
         success: function(response) {
-            $('#event_entry_modal').modal('hide');  
+            alert(response.msg);
+            if (response.status == true) {
+                location.reload();
+            }
+        },
+        error: function(xhr, status) {
+            console.log('Error occurred while saving event.');
+        }
+    });
+    return false;
+}
+
+
+function update_event() {
+    var event_id = $('#edit_event_id').val();
+    var event_name = $('#edit_event_name').val();
+    var event_start_date = $('#edit_event_start_date').val();
+    var event_end_date = $('#edit_event_end_date').val();
+    var event_start_time = $('#edit_event_start_time').val();
+    var event_end_time = $('#edit_event_end_time').val();
+    var event_color = $('#edit_event_color').val();
+
+    $.ajax({
+        url: "update_event.php",
+        type: "POST",
+        dataType: 'json',
+        data: {
+            edit_event_id: event_id,
+            edit_event_name: event_name,
+            edit_event_start_date: event_start_date,
+            edit_event_end_date: event_end_date,
+            edit_event_start_time: event_start_time,
+            edit_event_end_time: event_end_time,
+            edit_event_color: event_color
+        },
+        success: function(response) {
+            $('#edit_event_modal').modal('hide');
             if (response.status == true) {
                 alert(response.msg);
                 location.reload();
@@ -262,50 +377,37 @@ function save_event() {
         },
         error: function(xhr, status) {
             console.log('ajax error = ' + xhr.statusText);
-            alert(response.msg);
+            alert(event_id + event_name +  event_start_date +  event_end_date + event_start_time +  event_end_time);
         }
     });
     return false;
 }
 
-
-function update_event() {
-    var event_id = $("#edit_event_id").val(); // Assuming you have an input field with ID edit_event_id to store the event ID
-    var event_name = $("#edit_event_name").val();
-    var event_color = $("#edit_event_color").val();
-    var event_start_date = $("#edit_event_start_date").val();
-    var event_end_date = $("#edit_event_end_date").val();
-
-    // Perform validation here if needed
+function delete_event() {
+    var event_id = $('#edit_event_id').val();
 
     $.ajax({
-        url: "update_event.php",
+        url: "delete_event.php",
         type: "POST",
         dataType: 'json',
         data: {
-            event_id: event_id,
-            event_name: event_name,
-            event_color: event_color,
-            event_start_date: event_start_date,
-            event_end_date: event_end_date
+            event_id: event_id
         },
         success: function(response) {
             $('#edit_event_modal').modal('hide');
             if (response.status == true) {
                 alert(response.msg);
-                location.reload(); // Refresh the page or update the calendar display
+                location.reload();
             } else {
                 alert(response.msg);
             }
         },
         error: function(xhr, status) {
             console.log('ajax error = ' + xhr.statusText);
-            alert("Error occurred while updating event.");
+            alert("Error occurred while deleting event.");
         }
     });
-    return false;
 }
-
 
 </script>
 </html> 
