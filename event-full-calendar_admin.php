@@ -44,7 +44,7 @@ include "header.html";
   <div class="container">
 
     <div class="d-flex justify-content-between align-items-center">
-      <h2>SCHEDULE AN APPOINTMENT</h2>
+      <h2>MANAGE APPOINTMENT</h2>
       <ol>
         <li><a href="ui.php">Home</a></li>
         <li>Appointment</li>
