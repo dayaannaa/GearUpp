@@ -64,3 +64,9 @@ CREATE TABLE `products` (
   `Price` decimal(10,2) DEFAULT NULL,
   `productImage` VARCHAR(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `services` (
+  `ServiceID` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `ServiceName` varchar(100) DEFAULT NULL,
+  `serviceImage` VARCHAR(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
