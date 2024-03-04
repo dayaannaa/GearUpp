@@ -49,6 +49,9 @@ session_start();
     transform: translateY(-5px) scale(1.5); /* Translate and scale on hover */
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); /* Optional: Add shadow effect */
 } 
+    .breadcrumb {
+        margin-top: 50px;
+    }
 </style>
 =======
 
