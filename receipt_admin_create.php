@@ -305,6 +305,9 @@ $stmt->close();
         </button>
     </h3>
     <div class="input-group">
+        <input type="hidden" id="user_id" name="user_id" required value="<?php echo $user_id; ?>">
+    </div>
+    <div class="input-group">
         <label for="first_name">First Name:</label>
         <input type="text" id="first_name" name="first_name" required value="<?php echo $first_name; ?>">
     </div>
@@ -328,7 +331,7 @@ $stmt->close();
         <label for="city">City:</label>
         <input type="text" id="city" name="city" value="<?php echo $city; ?>">
     </div>
-    <button type="button" class="btn btn-secondary" id="verifyButton"><i class="fa fa-lock verify" aria-hidden="true"></i> Verify</button>
+    <button type="button" class="btn btn-secondary" id="verifyButton"><i class="fa fa-lock verify" aria-hidden="true"></i></button>
 </div>
 
 
@@ -865,7 +868,6 @@ $('.delete-service').click(function() {
                 // Handle success
                 console.log('Receipt saved successfully:', response);
                 // Optionally, perform any additional actions after updating
-                location.reload();
                 generatePDF();
             },
             error: function(xhr, status, error) {
@@ -887,8 +889,8 @@ function generatePDF() {
             currentReceiptId: $('#receipt_id').val() // Assuming you have an input field with ID currentReceiptId
         },
         success: function(pdfUrl) {
-            // Display the PDF to the user
             window.open(pdfUrl, '_blank'); // Open PDF in a new tab
+            location.reload();
         },
         error: function(xhr, status, error) {
             console.error('Error generating PDF:', error);
