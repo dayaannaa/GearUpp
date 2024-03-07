@@ -24,7 +24,8 @@
     session_start();
 
     if (!isset($_SESSION['admin_id'])) {
-        header("Location: user_login.php");
+        echo '<script> alert ("Please log in first.")</script>';
+        echo '<script> window.location.href = "user_login.php"; </script>';
         exit();
     }
     ?>

@@ -23,6 +23,7 @@
      .table-fill {
         margin-left: 250px;
         margin-top: 50px;
+        margin-bottom: 50px;
     }
 
     /* table tr {
@@ -46,7 +47,8 @@
     session_start();
 
     if (!isset($_SESSION['admin_id'])) {
-        header("Location: user_login.php");
+        echo '<script> alert ("Please log in first.")</script>';
+        echo '<script> window.location.href = "user_login.php"; </script>';
         exit();
     }
     ?>
@@ -78,6 +80,7 @@
                     <th>Password</th>
                     <th>Image</th>
                     <th class="text-center" colspan="2">Actions</th>
+
                 </tr>
             </thead>
             <tbody class="table-hover">
@@ -113,8 +116,8 @@
                                 echo '<img src="../GearUp/' . $filename . '" width="100" height="100"  style="margin-right: 5px;">';
                             }
                             echo '</td>';
-                            echo '<td><a href="customer_update.php" class="btn btn-secondary mr-2 bg-black">Update</a> </td>';
-                            echo '<td><a href="customer_delete.php?id=' . $row["user_id"] . '" class="btn mr-2 bg-danger text-white">Delete</a></td>';
+                            echo '<td><a href="user_update.php" class="btn btn-secondary mr-2 bg-black">Update</a> </td>';
+                            echo '<td><a href="user_delete.php?id=' . $row["user_id"] . '" class="btn mr-2 bg-danger text-white">Delete</a></td>';
                             echo "</tr>";
                         }
                     } else {

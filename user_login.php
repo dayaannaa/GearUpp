@@ -11,6 +11,13 @@
 	<link rel="stylesheet" href="css/style.css">
 
 </head>
+<style>
+	body {
+		overflow-x: hidden;
+		overflow-y: hidden;
+	}
+</style>
+
 <body>
 	<section class="ftco-section">
 			<div class="row justify-content-center">
@@ -57,10 +64,9 @@
 	</section>
 
 	<script src="js/jquery.min.js"></script>
-	<script src="js/popper.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/main.js"></script>
-
+  	<script src="js/popper.js"></script>
+  	<script src="js/bootstrap.min.js"></script>
+  	<script src="js/main.js"></script>
   <?php
     session_start(); 
     include "connection.php";
