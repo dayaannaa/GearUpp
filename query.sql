@@ -70,3 +70,32 @@ CREATE TABLE `services` (
   `ServiceName` varchar(100) DEFAULT NULL,
   `serviceImage` VARCHAR(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `receipt` (
+  `receipt_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `receipt_date` DATE,
+  `amount_paid` DECIMAL(10, 2),
+  `receipt_image` VARCHAR (50),
+  `status` VARCHAR (10),
+  `user_id` INT,
+  FOREIGN KEY (`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE
+);
+
+CREATE TABLE `receipt_products` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `receipt_id` INT NOT NULL,
+  `ProductID` INT NOT NULL,
+  `quantity` INT NOT NULL,
+  `cost` DECIMAL(10, 2) NOT NULL,
+  FOREIGN KEY (`receipt_id`) REFERENCES `receipt`(`receipt_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`ProductID`) REFERENCES `products`(`ProductID`) ON DELETE CASCADE
+);
+
+CREATE TABLE `receipt_services` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `receipt_id` INT NOT NULL,
+  `ServiceID` INT NOT NULL,
+  `cost` DECIMAL(10, 2) NOT NULL,
+  FOREIGN KEY (`receipt_id`) REFERENCES `receipt`(`receipt_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`ServiceID`) REFERENCES `services`(`ServiceID`) ON DELETE CASCADE
+);
