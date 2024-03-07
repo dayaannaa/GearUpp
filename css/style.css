@@ -4,6 +4,8 @@
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+ /* Importing Google font - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -48,9 +50,6 @@ html {
 
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block; }
-
-  /* Importing Google font - Poppins */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 * {
     margin: 0;
@@ -8333,7 +8332,7 @@ h1, h2, h3, h4, h5,
 .login-wrap {
   position: relative;
   background: #fff h3;
-    background-font-weight: 300; }
+  background-font-weight: 300; }
 
 .form-group {
   position: relative; }

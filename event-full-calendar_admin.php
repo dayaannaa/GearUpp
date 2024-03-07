@@ -39,8 +39,7 @@ session_start();
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<<<<<<< HEAD
-=======
+
 <style>
         .fc-event {
     transition: transform 0.2s ease, box-shadow 0.2s ease; /* Add transition effect */
@@ -61,7 +60,6 @@ session_start();
     <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
->>>>>>> 5b4d18806658661ea114868c5b91e4f0b5746bd4
 </head>
 <body>
 <?php

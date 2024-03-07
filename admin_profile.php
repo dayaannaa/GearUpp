@@ -21,14 +21,10 @@
 </head>
 <style>
     .table-fill {
-        margin-left: 400px;
-        max-width: 800px;
+        margin-left: 450px;
     }
     body {
         overflow-x: hidden;
-    }
-     {
-        width: auto;
     }
 </style>
 <body>
@@ -38,8 +34,7 @@
     session_start();
 
     if (!isset($_SESSION['admin_id'])) {
-        echo '<script> alert ("Please log in first.")</script>';
-        echo '<script> window.location.href = "user_login.php"; </script>';
+        header("Location: user_login.php");
         exit();
     }
     ?>
@@ -53,6 +48,7 @@
             <li>Admins</li>
           </ol>
         </div>
+
       </div>
     </section>
 </div>
@@ -62,9 +58,9 @@
                 <th class="text-center">ID</th>
                 <th class="text-center">Email</th>
                 <th class="text-center">Password</th>>
-                <th >Image</th>
-                <th><a href="admin_create.php" class="btn btn-secondary mr-2 bg-black">Create</a></th>
-                <th><a href="admin_update.php" class="btn btn-secondary mr-2 bg-black">Update</a></th>
+                <th class="text-center">Image</th>
+                <th><a href="admin_create.php" class="btn btn-secondary mr-2 bg-black">Create</a></td>
+                <th></th>
             </tr>
         </thead>
             <tbody>
@@ -84,22 +80,25 @@
 
                     if (mysqli_num_rows($result) > 0) {
                         while ($row = mysqli_fetch_assoc($result)) {
-                            echo '<tr>';
+                            echo "<tr>";
                             echo "<td class=text-center>" . $row["admin_id"] . "</td>";
                             echo "<td class=text-center>" . $row["email"] . "</td>";
                             echo "<td class=text-center>" . $row["password"] . "</td>";
                             echo '<td style="display: flex; justify-content: space-between; align-items: center;">';
                             $imageFilenames = explode(',', $row['admin_image']);
                             foreach ($imageFilenames as $filename) {
-                                echo '<img src="../GearUp/uploads/' . $filename . '" width="100" height="100"  style="margin-right: 5px;">';
+                                echo '<img src="../GearUp/' . $filename . '" width="100" height="100"  style="margin-right: 5px;">';
                             }                           
                             echo '</td>';
-                            echo '<td colspan="3" class=text-center><a href="admin_delete.php?id=' . $row["admin_id"] . '" class="btn btn-secondary mr-2 bg-danger">Delete</a></td>';
+                            echo '<td><a href="admin_update.php" class="btn btn-secondary mr-2 bg-black">Update</a></td>';
+                            echo '<td><a href="admin_delete.php?id=' . $row["admin_id"] . '" class="btn btn-secondary mr-2 bg-danger">Delete</a></td>';
                             echo "</tr>";
                         }
                     } else {
                         echo "<tr><td colspan='4'>No records found</td></tr>";
                     }
+              
+
                     mysqli_close($conn);
                 ?>
             </tbody>
