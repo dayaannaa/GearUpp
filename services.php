@@ -37,32 +37,31 @@
     <section id="services" class="services">
       <div class="container" data-aos="fade-up">
         <div class="section-title">
-          <h2>Products</h2>
-          <p>Check out our Products</p>
+          <h2>Services</h2>
+          <p>Check out our Services</p>
         </div>
 
         <div class="row">
           <?php
           include "connection.php";
 
-          $sql = "SELECT ProductName, Price, ProductImage FROM products";
+          $sql = "SELECT ServiceName, Price, ServiceImage FROM services";
           $result = mysqli_query($conn, $sql);
 
           if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
               echo '<div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">';
               echo '<div class="icon-box">';
-              echo "<a href='ProductDescription.php?ProductName=" . ($row["ProductName"]) . "'>";
-              echo "<img src='../GearUp/uploads/" . ($row["ProductImage"]) . "' alt='" . $row["ProductName"] . "' style='width: 200px; height: 200px;'><br><br>";
-              echo $row["ProductName"] . "</a><br>";
+              echo "<a href='ServiceDescription.php?ServiceName=" . urlencode($row["ServiceName"]) . "'>";
+              echo "<img src='GearUp/uploads," . ($row["ServiceImage"]) . "' alt='" . $row["ServiceName"] . "' style='width: 300px; height: 200px;'><br>";
+              echo $row["ServiceName"] . "</a><br>";  
               echo '<p>₱' . $row["Price"] . '</p>';
               echo '</div>';
               echo '</div>';
             }
           } else {
-            echo "No products found";
+            echo "No services found";
           }
-
 
           mysqli_close($conn);
           ?>
@@ -70,7 +69,6 @@
       </div>
     </section>
   </main>
-
 
 
   <?php
@@ -88,3 +86,5 @@
   <script src="assets/js/main.js"></script>
 </body>
 </html>
+
+

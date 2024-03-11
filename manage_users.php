@@ -54,76 +54,94 @@
     ?>
     <!-- <header id="header" class="fixed-top header-inner-pages bg-black">
     </header> -->
-<section class="breadcrumbs">
-      <div class="container">
+    <section class="breadcrumbs">
+        <div class="container">
 
-        <div class="d-flex justify-content-between align-items-center">
-          <h2>User Accounts</h2>
-          <ol>
-            <li><a href="admin_dash.php">Home</a></li>
-            <li>Users</li>
-          </ol>
+            <div class="d-flex justify-content-between align-items-center">
+            <h2>User Accounts</h2>
+            <ol>
+                <li><a href="admin_dash.php">Home</a></li>
+                <li>Users</li>
+            </ol>
+            </div>
         </div>
+    </section>
       </div>
-</section>
-      </div>
+      
+      <div class="container mt-3">
+        <form method="GET" action="">
+            <div class="mb-3">
+                <label for="search" class="form-label">Search Users:</label>
+                <input type="text" class="form-control" id="search" name="search" placeholder="Enter user info">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
         <table class="table-fill">
             <thead>
                 <tr>
-                    <th>Customer ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Phone Number</th>
-                    <th>Home Address</th>
-                    <th>City</th>
-                    <th>Email</th>
-                    <th>Password</th>
-                    <th>Image</th>
+                    <th class="text-center">Customer ID</th>
+                    <th class="text-center">Image</th>
+                    <th class="text-center">First Name</th>
+                    <th class="text-center">Last Name</th>
+                    <th class="text-center">Phone Number</th>
+                    <th class="text-center">Home Address</th>
+                    <th class="text-center">City</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Password</th>
                     <th class="text-center" colspan="2">Actions</th>
 
                 </tr>
             </thead>
             <tbody class="table-hover">
                 <?php
-                    if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
 
-                        $id = $_GET["id"];
+                    $search_query = isset($_GET['search']) ? $_GET['search'] : '';
 
-                        $sql = "DELETE FROM user_info WHERE user_id=$id";
-                        if (mysqli_query($conn, $sql)) {
-                            echo '<tr><td colspan="9" style="text-align: center; background-color: #d4edda; color: #155724; padding: 10px;">Record deleted successfully</td></tr>';
-                        } else {
-                            echo "Error deleting record: " . mysqli_error($conn);
+                        if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
+
+                            $id = $_GET["id"];
+
+                            $sql = "DELETE FROM user_info WHERE user_id=$id";
+                            if (mysqli_query($conn, $sql)) {
+                                echo '<tr><td colspan="9" style="text-align: center; background-color: #d4edda; color: #155724; padding: 10px;">Record deleted successfully</td></tr>';
+                            } else {
+                                echo "Error deleting record: " . mysqli_error($conn);
+                                }
                             }
-                        }
+
                     $sql = "SELECT * FROM user_info";
+                        if (!empty($search_query)) {
+                            $sql .= " WHERE first_name LIKE '%$search_query%' OR last_name LIKE '%$search_query%' OR city LIKE '%$search_query%' OR email LIKE '%$search_query%' OR user_id = '$search_query'";
+                        }
+
                     $result = mysqli_query($conn, $sql);
 
-                    if (mysqli_num_rows($result) > 0) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            echo "<tr>";
-                            echo "<td class=text-center>" . $row["user_id"] . "</td>";
-                            echo "<td class=text-center>" . $row["first_name"] . "</td>";
-                            echo "<td class=text-center>" . $row["last_name"] . "</td>";
-                            echo "<td class=text-center>" . $row["phone"] . "</td>";
-                            echo "<td class=text-center>" . $row["address"] . "</td>";
-                            echo "<td class=text-center>" . $row["city"] . "</td>";
-                            echo "<td class=text-center>" . $row["email"] . "</td>";
-                            echo "<td class=text-center>" . $row["password"] . "</td>";
-                            echo '<td style="display: flex; justify-content: space-between; align-items: center;">';
-                            $imageFilenames = explode(',', $row['user_image']);
-                            foreach ($imageFilenames as $filename) {
-                                echo '<img src="../GearUp/' . $filename . '" width="100" height="100"  style="margin-right: 5px;">';
+                        if (mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                echo "<tr>";
+                                echo "<td class=text-center>" . $row["user_id"] . "</td>";
+                                echo '<td style="display: flex; justify-content: space-between; align-items: center;">';
+                                $imageFilenames = explode(',', $row['user_image']);
+                                foreach ($imageFilenames as $filename) {
+                                    echo '<img src="../GearUp/' . $filename . '" width="100" height="100"  style="margin-right: 5px;">';
+                                }
+                                echo "<td class=text-center>" . $row["first_name"] . "</td>";
+                                echo "<td class=text-center>" . $row["last_name"] . "</td>";
+                                echo "<td class=text-center>" . $row["phone"] . "</td>";
+                                echo "<td class=text-center>" . $row["address"] . "</td>";
+                                echo "<td class=text-center>" . $row["city"] . "</td>";
+                                echo "<td class=text-center>" . $row["email"] . "</td>";
+                                echo "<td class=text-center>" . $row["password"] . "</td>";
+                                echo '</td>';
+                                echo '<td><a href="user_update.php" class="btn btn-secondary mr-2 bg-black">Update</a> </td>';
+                                echo '<td><a href="user_delete.php?id=' . $row["user_id"] . '" class="btn mr-2 bg-danger text-white">Delete</a></td>';
+                                echo "</tr>";
                             }
-                            echo '</td>';
-                            echo '<td><a href="user_update.php" class="btn btn-secondary mr-2 bg-black">Update</a> </td>';
-                            echo '<td><a href="user_delete.php?id=' . $row["user_id"] . '" class="btn mr-2 bg-danger text-white">Delete</a></td>';
-                            echo "</tr>";
+                        } else {
+                            echo "<tr><td colspan='4'>No records found</td></tr>";
                         }
-                    } else {
-                        echo "<tr><td colspan='4'>No records found</td></tr>";
-                    }
-
 
                     mysqli_close($conn);
                 ?>

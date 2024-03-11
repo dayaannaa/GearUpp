@@ -46,89 +46,106 @@
     session_start();
 
     if (!isset($_SESSION['admin_id'])) {
-        header("Location: user_login.php");
+        echo '<script> alert ("Please log in first.")</script>';
+        echo '<script> window.location.href = "user_login.php"; </script>';
         exit();
     }
     ?>
     <!-- <header id="header" class="fixed-top header-inner-pages bg-black">
     </header> -->
-<section class="breadcrumbs">
-      <div class="container">
+    <section class="breadcrumbs">
+        <div class="container">
 
-        <div class="d-flex justify-content-between align-items-center">
-          <h2>Receipts</h2>
-          <ol>
-            <li><a href="admin_dash.php">Home</a></li>
-            <li>Receipts</li>
-          </ol>
+            <div class="d-flex justify-content-between align-items-center">
+            <h2>Receipts</h2>
+            <ol>
+                <li><a href="admin_dash.php">Home</a></li>
+                <li>Receipts</li>
+            </ol>
+            </div>
         </div>
-      </div>
-</section>
-      </div>
+    </section>
+
+    <div class="container mt-3">
+        <form method="GET" action="">
+            <div class="mb-3">
+                <label for="search" class="form-label">Search Receipt:</label>
+                <input type="text" class="form-control" id="search" name="search" placeholder="Enter email or ID">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    </div>
         <table class="table-fill">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Date</th>
-                    <th>Customer Name</th>
-                    <th>Details</th>
-                    <th>Image</th>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Image</th>
+                    <th class="text-center">Date</th>
+                    <th class="text-center">Customer Name</th>
+                    <th class="text-center">Details</th>
                     <th class="text-center" colspan="2">Actions</th>
+                    <th><a href="receipt_admin_create.php" class="btn btn-secondary mr-2 bg-black">Create</a></th>
                 </tr>
             </thead>
             <tbody class="table-hover">
             <?php
-$sql = "SELECT r.receipt_id, r.receipt_date, CONCAT(u.first_name, ' ', u.last_name) AS customer_name, r.receipt_image
-        FROM receipt r
-        INNER JOIN user_info u ON r.user_id = u.user_id";
-$result = mysqli_query($conn, $sql);
 
-if (mysqli_num_rows($result) > 0) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "<tr>";
-        echo "<td class='text-center'>" . $row["receipt_id"] . "</td>";
-        echo "<td class='text-center'>" . $row["receipt_date"] . "</td>";
-        echo "<td class='text-center'>" . $row["customer_name"] . "</td>";
-        
-        // Fetching details from receipt_products table
-        $productDetails = "";
-        $sqlProducts = "SELECT rp.quantity, p.ProductName, rp.cost
-                        FROM receipt_products rp
-                        INNER JOIN products p ON rp.ProductID = p.ProductID
-                        WHERE rp.receipt_id = " . $row['receipt_id'];
-        $resultProducts = mysqli_query($conn, $sqlProducts);
-        while ($product = mysqli_fetch_assoc($resultProducts)) {
-            $productDetails .= $product['quantity'] . " x " . $product['ProductName'] . " ($" . $product['cost'] . "), ";
-        }
+            $search_query = isset($_GET['search']) ? $_GET['search'] : '';
 
-        // Fetching details from receipt_services table
-        $serviceDetails = "";
-        $sqlServices = "SELECT s.ServiceName, rs.cost
-                        FROM receipt_services rs
-                        INNER JOIN services s ON rs.ServiceID = s.ServiceID
-                        WHERE rs.receipt_id = " . $row['receipt_id'];
-        $resultServices = mysqli_query($conn, $sqlServices);
-        while ($service = mysqli_fetch_assoc($resultServices)) {
-            $serviceDetails .= $service['ServiceName'] . " ($" . $service['cost'] . "), ";
-        }
+            $sql = "SELECT r.receipt_id, r.receipt_date, CONCAT(u.first_name, ' ', u.last_name) AS customer_name, r.receipt_image
+                    FROM receipt r
+                    INNER JOIN user_info u ON r.user_id = u.user_id";
+                    if (!empty($search_query)) {
+                        $sql .= " WHERE r.receipt_date LIKE '%$search_query%' OR CONCAT(u.first_name, ' ', u.last_name) LIKE '%$search_query%'";
+                    }
+            $result = mysqli_query($conn, $sql);
 
-        // Outputting combined details
-        $details = rtrim($productDetails . $serviceDetails, ", ");
-        echo "<td>" . $details . "</td>";
-        
-        echo '<td style="display: flex; justify-content: space-between; align-items: center;">';
-        echo '<a href="../GearUp/' . $row["receipt_image"] . '" target="_blank">View PDF</a>';
-        echo '</td>';
-        echo '<td><a href="receipt_admin_edit_list.php?id=' . $row["receipt_id"] . '" class="btn btn-secondary mr-2 bg-black">Edit</a> </td>';
-        echo '<td><a href="receipt_admin_delete_list.php?id=' . $row["receipt_id"] . '" class="btn mr-2 bg-danger text-white">Delete</a></td>';
-        echo "</tr>";
-    }
-} else {
-    echo "<tr><td colspan='10'>No records found</td></tr>";
-}
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr>";
+                    echo "<td class=text-center>" . $row["receipt_id"] . "</td>";
+                    echo '<td class=text-center> <a href="../GearUp/' . $row["receipt_image"] . '" target="_blank">View PDF</a></td>';
+                    echo "<td class=text-center>" . $row["receipt_date"] . "</td>";
+                    echo "<td class=text-center>" . $row["customer_name"] . "</td>";
+                    
+                    // Fetching details from receipt_products table
+                    $productDetails = "";
+                    $sqlProducts = "SELECT rp.quantity, p.ProductName, rp.cost
+                                    FROM receipt_products rp
+                                    INNER JOIN products p ON rp.ProductID = p.ProductID
+                                    WHERE rp.receipt_id = " . $row['receipt_id'];
+                    $resultProducts = mysqli_query($conn, $sqlProducts);
+                    while ($product = mysqli_fetch_assoc($resultProducts)) {
+                        $productDetails .= $product['quantity'] . " x " . $product['ProductName'] . " ($" . $product['cost'] . "), ";
+                    }
 
-mysqli_close($conn);
-?>
+                    // Fetching details from receipt_services table
+                    $serviceDetails = "";
+                    $sqlServices = "SELECT s.ServiceName, rs.cost
+                                    FROM receipt_services rs
+                                    INNER JOIN services s ON rs.ServiceID = s.ServiceID
+                                    WHERE rs.receipt_id = " . $row['receipt_id'];
+                    $resultServices = mysqli_query($conn, $sqlServices);
+                    while ($service = mysqli_fetch_assoc($resultServices)) {
+                        $serviceDetails .= $service['ServiceName'] . " ($" . $service['cost'] . "), ";
+                    }
+
+                    // Outputting combined details
+                    $details = rtrim($productDetails . $serviceDetails, ", ");
+                    echo "<td>" . $details . "</td>";
+                    echo '</td>';
+                    echo '<td><a href="receipt_admin_edit_list.php?id=' . $row["receipt_id"] . '" class="btn btn-secondary mr-2 bg-black">Edit</a> </td>';
+                    echo '<td colspan="2"><a href="receipt_admin_delete_list.php?id=' . $row["receipt_id"] . '" class="btn mr-2 bg-danger text-white">Delete</a></td>';
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='10' class=text-center>No records found</td></tr>";
+            }
+
+            mysqli_close($conn);
+            ?>
 
             </tbody>
         </table>

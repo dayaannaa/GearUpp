@@ -33,7 +33,7 @@
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-          <h2>Tips and Educational Resources about Car Maintenance</h2>
+          <!-- <h2>Tips and Educational Resources about Car Maintenance</h2> -->
           <ol>
             <li><a href="ui.php">Home</a></li>
             <li>Resources</li>
