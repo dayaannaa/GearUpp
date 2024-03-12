@@ -30,7 +30,7 @@
     } */
 
     body {
-        overflow-x: hidden;
+        overflow-x: visible;
     }
 
     header {
@@ -66,78 +66,45 @@
         </div>
     </section>
 
-    <div class="container mt-3">
-        <form method="GET" action="">
-            <div class="mb-3">
-                <label for="search" class="form-label">Search Receipt:</label>
-                <input type="text" class="form-control" id="search" name="search" placeholder="Enter email or ID">
-            </div>
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-    </div>
-
     </div>
         <table class="table-fill">
             <thead>
                 <tr>
                     <th class="text-center">ID</th>
-                    <th class="text-center">Image</th>
                     <th class="text-center">Date</th>
                     <th class="text-center">Customer Name</th>
                     <th class="text-center">Details</th>
                     <th class="text-center" colspan="2">Actions</th>
-                    <th><a href="receipt_admin_create.php" class="btn btn-secondary mr-2 bg-black">Create</a></th>
                 </tr>
             </thead>
             <tbody class="table-hover">
             <?php
 
-            $search_query = isset($_GET['search']) ? $_GET['search'] : '';
-
             $sql = "SELECT r.receipt_id, r.receipt_date, CONCAT(u.first_name, ' ', u.last_name) AS customer_name, r.receipt_image
                     FROM receipt r
                     INNER JOIN user_info u ON r.user_id = u.user_id";
-                    if (!empty($search_query)) {
-                        $sql .= " WHERE r.receipt_date LIKE '%$search_query%' OR CONCAT(u.first_name, ' ', u.last_name) LIKE '%$search_query%'";
-                    }
+            if (!empty($search_query)) {
+                $sql .= " WHERE r.receipt_date LIKE '%$search_query%' OR CONCAT(u.first_name, ' ', u.last_name) LIKE '%$search_query%'";
+            }
             $result = mysqli_query($conn, $sql);
 
-<<<<<<< HEAD
-        // Outputting combined details
-        $details = rtrim($productDetails . $serviceDetails, ", ");
-        echo "<td>" . $details . "</td>";
-        
-        echo '<td style="display: flex; justify-content: space-between; align-items: center;">';
-        echo '<a href="../Gear
-        Up/' . $row["receipt_image"] . '" target="_blank">View PDF</a>';
-        echo '</td>';
-        echo '<td><a href="receipt_admin_edit_list.php?id=' . $row["receipt_id"] . '" class="btn btn-secondary mr-2 bg-black">Edit</a> </td>';
-        echo '<td><a href="receipt_admin_delete_list.php?id=' . $row["receipt_id"] . '" class="btn mr-2 bg-danger text-white">Delete</a></td>';
-        echo "</tr>";
-    }
-} else {
-    echo "<tr><td colspan='10'>No records found</td></tr>";
-}
-=======
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>";
-                    echo "<td class=text-center>" . $row["receipt_id"] . "</td>";
-                    echo '<td class=text-center> <a href="../GearUp/' . $row["receipt_image"] . '" target="_blank">View PDF</a></td>';
-                    echo "<td class=text-center>" . $row["receipt_date"] . "</td>";
-                    echo "<td class=text-center>" . $row["customer_name"] . "</td>";
-                    
+                    echo "<td class='text-center'>" . $row["receipt_id"] . "</td>";
+                    echo "<td class='text-center'>" . $row["receipt_date"] . "</td>";
+                    echo "<td class='text-center'>" . $row["customer_name"] . "</td>";
+
                     // Fetching details from receipt_products table
                     $productDetails = "";
-                    $sqlProducts = "SELECT rp.quantity, p.ProductName, rp.cost
+                    $sqlProducts = "SELECT p.ProductName, rp.quantity
                                     FROM receipt_products rp
                                     INNER JOIN products p ON rp.ProductID = p.ProductID
                                     WHERE rp.receipt_id = " . $row['receipt_id'];
                     $resultProducts = mysqli_query($conn, $sqlProducts);
                     while ($product = mysqli_fetch_assoc($resultProducts)) {
-                        $productDetails .= $product['quantity'] . " x " . $product['ProductName'] . " ($" . $product['cost'] . "), ";
+                        $productDetails .= $product['ProductName'] . " (" . $product['quantity'] . "), ";
                     }
->>>>>>> a6b47e04280b9adf53e005fabcdd9c54da16bc79
 
                     // Fetching details from receipt_services table
                     $serviceDetails = "";
@@ -153,13 +120,14 @@
                     // Outputting combined details
                     $details = rtrim($productDetails . $serviceDetails, ", ");
                     echo "<td>" . $details . "</td>";
-                    echo '</td>';
-                    echo '<td><a href="receipt_admin_edit_list.php?id=' . $row["receipt_id"] . '" class="btn btn-secondary mr-2 bg-black">Edit</a> </td>';
-                    echo '<td colspan="2"><a href="receipt_admin_delete_list.php?id=' . $row["receipt_id"] . '" class="btn mr-2 bg-danger text-white">Delete</a></td>';
+
+                    // Actions
+                    echo '<td><a href="receipt_admin_edit_list.php?id=' . $row["receipt_id"] . '" class="btn btn-secondary mr-2 bg-black">Edit</a></td>';
+                    echo '<td><a href="receipt_admin_delete_list.php?id=' . $row["receipt_id"] . '" class="btn mr-2 bg-danger text-white">Delete</a></td>';
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='10' class=text-center>No records found</td></tr>";
+                echo "<tr><td colspan='10' class='text-center'>No records found</td></tr>";
             }
 
             mysqli_close($conn);
@@ -170,3 +138,22 @@
 
 </body>
 </html>
+
+<script>
+    function generateReceiptPDF(receiptId) {
+    // Send AJAX request to generate PDF
+    $.ajax({
+        url: 'receipt_print.php',
+        method: 'POST',
+        data: {
+            receiptId: receiptId
+        },
+        success: function(pdfUrl) {
+            window.open(pdfUrl, '_blank'); // Open PDF in a new tab
+        },
+        error: function(xhr, status, error) {
+            console.error('Error generating PDF:', error);
+        }
+    });
+}
+</script>

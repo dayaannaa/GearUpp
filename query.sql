@@ -137,3 +137,9 @@ CREATE TABLE `receipt_services` (
   FOREIGN KEY (`receipt_id`) REFERENCES `receipt`(`receipt_id`) ON DELETE CASCADE,
   FOREIGN KEY (`ServiceID`) REFERENCES `services`(`ServiceID`) ON DELETE CASCADE
 );
+
+CREATE TABLE `resources` (
+  `resource_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `description` TEXT,
+  `resource_image` VARCHAR (50)
+);

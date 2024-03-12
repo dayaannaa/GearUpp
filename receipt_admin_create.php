@@ -92,7 +92,7 @@ $service_row_total = mysqli_fetch_assoc($service_result_total);
 $total_service_cost = $service_row_total['total_service_cost'];
 
 $subtotal = $total_product_cost + $total_service_cost;
-$taxrate = 12;
+$taxrate = 2;
 $tax = $taxrate * $subtotal / 100;
 $grandtotal = $subtotal + $tax;
 ?>
@@ -171,7 +171,8 @@ $stmt->close();
     margin-bottom: 20px;
     width: 300px;
     margin-top: 10px;
-    transform: translate(120px);
+    margin-left: 120px;
+
 }
 
 .create-receipt h2 {
@@ -222,8 +223,9 @@ $stmt->close();
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     /* margin-bottom: 20px; */
     /* margin-left: 110px; */
-    width: 92.7%;
+    width: 75.8%;
     /* margin-top: 10px; */
+    margin-left: 320px;
     transform: translate(120px, -280px);
 }
 
@@ -490,14 +492,13 @@ $stmt->close();
 
 <div align="right" class="totalCompute">
     <strong>Subtotal:</strong>
-    <span>₱<?php echo number_format($subtotal, 2); ?></span><br>
+    <span id="sub_total" value="">₱<?php echo number_format($subtotal, 2); ?></span><br>
     <strong>Tax Rate:</strong>
-    <span><?php echo number_format($taxrate); ?>&percnt;</span><br>
+    <span id="taxrate"><?php echo number_format($taxrate); ?>&percnt;</span><br>
     <strong>Tax:</strong>
-    <span>₱<?php echo number_format($tax, 2); ?></span><br>
+    <span id="tax">₱<?php echo number_format($tax, 2); ?></span><br>
     <strong>Grand Total:</strong>
     <span id="grand_total">₱<?php echo number_format($grandtotal, 2); ?></span><br>
-    
     <button type="button" id="backToReceiptLists" class="btn btn-secondary">Back (to Receipt Lists)</button>
     <button type="button" id="submitReceipt" class="btn btn-primary">Submit (Receipt)</button>
 </div>
@@ -788,25 +789,40 @@ $('.delete-service').click(function() {
 
     $(document).ready(function() {
     $('#submitReceipt').click(function() {
+        // Retrieve the grand total value
         var grandTotal = parseFloat($('#grand_total').text().replace('₱', '').replace(',', ''));
-        var currentReceiptId = $('#receipt_id').val();
+        var subtotal = parseFloat($('#sub_total').text().replace('₱', '').replace(',', ''));
+        var tax = parseFloat($('#tax').text().replace('₱', '').replace(',', ''));
+        var taxrate= $('#taxrate').text();
         var selectedProductId = $('#form_id').val();
+        
+        // Retrieve other necessary data from the inputs
+        var currentReceiptId = $('#receipt_id').val(); // Assuming you have an input field with ID currentReceiptId
 
+        // Prepare data to send to server
         var data = {
             grandTotal: grandTotal,
+            subtotal: subtotal,
+            tax:tax,
+            taxrate: taxrate,
             currentReceiptId: currentReceiptId,
             selectedProductId: selectedProductId
         };
 
+        // Send AJAX request to update the receipt and generate PDF
         $.ajax({
             url: 'receipt_admin_submit.php',
             method: 'POST',
-            data: data,
+            data: data, 
             success: function(response) {
+                // Handle success
                 console.log('Receipt saved successfully:', response);
+                // Optionally, perform any additional actions after updating
                 generatePDF();
+                
             },
             error: function(xhr, status, error) {
+                // Handle error
                 console.error('Error updating receipt:', error);
             }
         });
@@ -814,15 +830,23 @@ $('.delete-service').click(function() {
 });
 
 function generatePDF() {
+    // Send AJAX request to generate PDF
     $.ajax({
         url: 'receipt_print.php',
         method: 'POST',
         data: {
+            // Pass any additional data needed for generating PDF
             grandTotal: parseFloat($('#grand_total').text().replace('₱', '').replace(',', '')),
-            currentReceiptId: $('#receipt_id').val()
+            subtotal: parseFloat($('#sub_total').text().replace('₱', '').replace(',', '')),
+            tax: parseFloat($('#tax').text().replace('₱', '').replace(',', '')),
+            
+            taxrate: ($('#taxrate').text()),
+
+            
+            currentReceiptId: $('#receipt_id').val() // Assuming you have an input field with ID currentReceiptId
         },
         success: function(pdfUrl) {
-            window.open(pdfUrl, '_blank');
+            window.open(pdfUrl, '_blank'); // Open PDF in a new tab
             location.reload();
         },
         error: function(xhr, status, error) {

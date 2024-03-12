@@ -129,11 +129,6 @@ function display_events() {
     // 'Available' is found in the event title
     event.className = 'available-event';
 }
-
-                // Add number of time slots to the event's title
-
-
-
                 events.push(event);
             });
 

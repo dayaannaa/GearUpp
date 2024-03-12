@@ -83,12 +83,9 @@
         </thead>
             <tbody>
             <?php
-<<<<<<< HEAD
-=======
 
                 $search_query = isset($_GET['search']) ? $_GET['search'] : '';
 
->>>>>>> a6b47e04280b9adf53e005fabcdd9c54da16bc79
                 $query = "SELECT p.ProductID, p.ProductName, p.Price, p.Description, p.productImage, i.Quantity
                 FROM products p
                 INNER JOIN inventory i ON p.ProductID = i.ProductID";

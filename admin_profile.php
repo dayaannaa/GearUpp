@@ -20,9 +20,7 @@
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
 <style>
-    .table-fill {
-        margin-left: 450px;
-    }
+
     body {
         overflow-x: hidden;
     }

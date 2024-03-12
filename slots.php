@@ -29,7 +29,6 @@ session_start();
         padding: 20px;
         display: flex;
         flex-wrap: wrap;
-        margin-top: 100px;
     }
     .slot {
     width: calc(100% / 4 - 20px);
@@ -326,9 +325,7 @@ while ($row = $result->fetch_assoc()) {
     </div>
 </div>
 <!-- End popup dialog box -->
-<br>
 </main>
-<br>
 <?php
     include "footer.html";
 ?>

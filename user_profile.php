@@ -86,9 +86,75 @@
 
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
+<style>
+    /* Container */
+form {
+    width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Profile Picture */
+form img {
+    display: block;
+    margin: 0 auto;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+/* Upload Profile Picture Label */
+#upload_label {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* File Input */
+#user_image {
+    display: none;
+}
+
+/* Labels and Inputs */
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+</style>
 <body>
     <?php
-    include "header.html";
+    include "sidebaruser.html";
     ?>
 
     <section class="breadcrumbs">
@@ -104,42 +170,34 @@
 
       </div>
     </section>
-
+<br>
     <form action="user_profile_update.php" method="post" enctype="multipart/form-data">
-        <img src="<?php echo $row['user_image']; ?>" alt="User Image" width="150"><?php echo $row['first_name'] . " " . $row['last_name']; ?><br>
+        <img src="<?php echo $row['user_image']; ?>" alt="User Image" width="150"><br>
 
-        <label for="user_image" id="upload_label">Upload Profile Picture<i class="fa-solid fa-pen-to-square"></i></label><br>
+        <label for="user_image" id="upload_label">Upload Profile Picture<i class="fa-solid fa-pen-to-square"></i></label>
 
-        <input type="file" name="user_image" id="user_image" style="display: none;"><br>
+        <input type="file" name="user_image" id="user_image" style="display: none;">
 
-        <label for="first_name">First Name:</label><br>
-        <input type="text" id="first_name" name="first_name" value="<?php echo $row['first_name']; ?>"><br>
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" value="<?php echo $row['first_name']; ?>">
         
         <label for="last_name">Last Name:</label><br>
-        <input type="text" id="last_name" name="last_name" value="<?php echo $row['last_name']; ?>"><br>
+        <input type="text" id="last_name" name="last_name" value="<?php echo $row['last_name']; ?>">
         
         <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" value="<?php echo $row['email']; ?>" readonly><br>
+        <input type="email" id="email" name="email" value="<?php echo $row['email']; ?>" readonly>
         
         <label for="phone">Phone Number:</label><br>
-        <input type="text" id="phone" name="phone" value="<?php echo $row['phone']; ?>"><br>
+        <input type="text" id="phone" name="phone" value="<?php echo $row['phone']; ?>">
 
         <label for="address">Address:</label><br>
-        <input type="text" id="address" name="address" value="<?php echo $row['address']; ?>"><br>
+        <input type="text" id="address" name="address" value="<?php echo $row['address']; ?>">
         
         <label for="city">City:</label><br>
-        <input type="text" id="city" name="city" value="<?php echo $row['city']; ?>"><br>
+        <input type="text" id="city" name="city" value="<?php echo $row['city']; ?>">
         
         <input type="submit" value="Update Profile" name="submit">
     </form>
-
-    <div>
-        <a href="logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
-    </div>
-
-    <?php
-    include "footer.html";
-    ?>
 
     <div id="preloader"></div>
 

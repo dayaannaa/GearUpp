@@ -1,3 +1,7 @@
+<?php
+    session_start();
+    include "connection.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,8 +19,13 @@
     <link rel="stylesheet" href="css/table.css">
     <title>Receipt History</title>
 </head>
+<style>
+    .tableReceipts{
+        margin-left: 410px;
+    }
+</style>
 <body>
-    <?php include "sidebar.html"; ?>
+    <?php include "sidebaruser.html"; ?>
     <section class="breadcrumbs">
         <div class="container">
 
@@ -30,54 +39,43 @@
         </div>
     </section>
       </div>
+    <div class= tableReceipts>
     <table class="table-fill">
         <thead>
             <tr>
                 <th class="text-center">Receipt Date</th> 
                 <th class="text-center">Amount Paid</th> 
-                <th class="text-center">Receipt Image</th>
             </tr>
         </thead>
         <tbody class="table-hover">
             <?php
-            session_start(); // Start the session to access session variables
-            include "connection.php";
-
-            // Check if the user is logged in
             if (!isset($_SESSION['user_id'])) {
-                // Redirect the user to the login page if not logged in
                 header("Location: user_login.php");
-                exit(); // Stop further execution of the script
+                exit();
             }
 
-            // Get the user_id of the logged-in user from the session
             $user_id = $_SESSION['user_id'];
 
-            // Query to retrieve receipts of the logged-in user
             $sql = "SELECT r.receipt_date, r.amount_paid, r.receipt_image
                     FROM receipt r
                     WHERE r.user_id = $user_id";
 
             $result = mysqli_query($conn, $sql);
 
-            // Display receipts if there are any
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    // Display each receipt row
                     echo "<tr>";
                     echo "<td class='text-center'>" . $row["receipt_date"] . "</td>";
                     echo "<td class='text-center'>" . $row["amount_paid"] . "</td>";
-                    echo '<td class="text-center"> <a href="../GearUp/' . $row["receipt_image"] . '" target="_blank">View PDF</a></td>';
                     echo "</tr>";
                 }
             } else {
-                // If no receipts found
-                echo "<tr><td colspan='3' class='text-center'>No records found</td></tr>";
+                echo "<tr><td colspan='2' class='text-center'>No records found</td></tr>";
             }
-            // Close the database connection
             mysqli_close($conn);
             ?>
         </tbody>
     </table>
+        </div>
 </body>
 </html>

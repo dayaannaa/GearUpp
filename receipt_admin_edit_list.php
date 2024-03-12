@@ -128,9 +128,18 @@ if ($result->num_rows > 0) {
 } else {
     echo "User information not found.";
 }
-
 $stmt->close();
+?>
 
+<?php
+$receiptDate = "";
+$sql = "SELECT receipt_date FROM receipt WHERE receipt_id = ? ";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $current_receipt_id);
+$stmt->execute();
+$stmt->bind_result($receiptDate);
+$stmt->fetch();
+$stmt->close();
 ?>
 
 <!DOCTYPE html>
@@ -185,7 +194,7 @@ $stmt->close();
     margin-bottom: 20px;
     width: 300px;
     margin-top: 10px;
-    transform: translate(120px);
+    margin-left: 120px;
 }
 
 .create-receipt h2 {
@@ -314,15 +323,12 @@ $stmt->close();
 
         <!-- Receipt Date -->
         <label for="receipt_date">Receipt Date:</label>
-        <input type="date" id="receipt_date" name="receipt_date" required><br><br>
+        <input type="date" id="receipt_date" name="receipt_date" value="<?php echo $receiptDate; ?>"required><br><br>
 </div>
 
         <!-- Customer Information -->
         <div id="customer_information">
         <h3>Customer Information<!-- Button to trigger modal -->
-        <button type="button" id="select-existing-user" class="btn btn-primary" data-toggle="modal" data-target="#userModal">
-            Or Select Existing User
-        </button>
     </h3>
     <div class="input-group">
         <label for="first_name">First Name:</label>
