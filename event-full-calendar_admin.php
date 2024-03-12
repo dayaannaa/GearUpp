@@ -1,32 +1,21 @@
 <?php
+
 require 'connection.php';
 session_start();
-  if (!isset($_SESSION['admin_id'])) {
-      header("Location: user_login.php");
-      exit();
-  }
-  
-  // Fetch legend items from the database
-// $sql = "SELECT * FROM legends";
-// $result = $conn->query($sql);
-
-// // Check if there are any legend items
-// if ($result->num_rows > 0) {
-//     // Output legend items dynamically
-//     while($row = $result->fetch_assoc()) {
-//         echo '<div class="legend-item">';
-//         echo '<div class="legend-color" style="background-color: ' . $row["color"] . ';">' . $row["name"] . '</div>';
-//         echo '</div>';
-//     }
-// } else {
-//     echo "No legend items found.";
-// }
+if (!isset($_SESSION['admin_id'])) {
+    echo '<script> alert ("Please log in first.")</script>';
+    echo '<script> window.location.href = "user_login.php"; </script>';
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-<title>Appointment</title>
-<!-- *Note: You must have internet connection on your laptop or pc other wise below code is not working -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Accounts Management</title>
+
+
 <!-- CSS for full calender -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" rel="stylesheet" />
 <!-- JS for jQuery -->
@@ -40,18 +29,8 @@ session_start();
 <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-<style>
-        .fc-event {
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Add transition effect */
-}
-
-    .fc-event:hover {
-    transform: translateY(-5px) scale(1.5); /* Translate and scale on hover */
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); /* Optional: Add shadow effect */
-} 
-</style>
-
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -59,18 +38,26 @@ session_start();
     <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     <link href="assets/css/style.css" rel="stylesheet">
-</head>
+    </head>
+<style>
+    .fc-event {
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Add transition effect */
+}
+
+    .fc-event:hover {
+    transform: translateY(-5px) scale(1.5); /* Translate and scale on hover */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); /* Optional: Add shadow effect */
+} 
+    .row {
+        margin-left: 100px;
+    }
+</style>
+
 <body>
 <?php
-include "header.html";
-?>
- <?php
-  /* session_start();
-  if (!isset($_SESSION['admin_id'])) {
-      header("Location: user_login.php");
-      exit();
-  } */
+include 'sidebar.html';
 ?>
 
 <main id="main">
@@ -92,7 +79,6 @@ include "header.html";
 <div class="container">
     <div class="row">
         <div class="col-lg-9">
-            <!-- <h5 align="center">Appointment</h5> -->
             <br>
             <div id="calendar"></div>
         </div>
@@ -103,7 +89,7 @@ include "header.html";
                 <div class="legend-item">
                 <div class="legend-color" style="background-color: #007bff; color: white;">NO SLOTS</div>
                     <div class="legend-color" style="background-color: #ffc107; ">PENDING</div>
-                    <div class="legend-color" style="background-color: #ff6767; ">BOOKED</div>
+                    <div class="legend-color" style="background-color: #ff6767; ">FULLY BOOKED</div>
                     <div class="legend-color" style="background-color: #d6d6d6; ">HOLIDAY</div>
                     <div class="legend-color" style="background-color: #52f222; ">AVAILABLE</div>
                 </div>
@@ -128,7 +114,7 @@ include "header.html";
                                 <select name="event_name" id="event_name" class="form-control">
                                     <option value="No Slots">No Slots</option>
                                     <option value="Pending">Pending</option>
-                                    <option value="Booked">Booked</option>
+                                    <option value="Fully Booked">Fully Booked</option>
                                     <option value="Holiday">Holiday</option>
                                     <option value="Available">Available</option>
                                 </select>
@@ -166,6 +152,18 @@ include "header.html";
                             <input type="time" name="event_end_time" id="event_end_time" class="form-control" placeholder="Event end time">
                         </div>
                     </div>
+                    <div class="col-sm-6">  
+                    <div class="form-group">
+                        <label for="duration">Duration:</label>
+                        <input type="text" name="duration" id="duration" class="form-control" placeholder="Minutes">
+                    </div>
+                    </div>
+                    <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="slot_number">Number:</label>
+                        <input type="text" name="num_time_slots" id="num_time_slots" class="form-control" placeholder="Slots number">
+                    </div>
+                    </div>
                 </div>
                 </div>
             </div>
@@ -198,7 +196,7 @@ include "header.html";
                         <select name="edit_event_name" id="edit_event_name" class="form-control">
                                     <option value="No Slots">No Slots</option>
                                     <option value="Pending">Pending</option>
-                                    <option value="Booked">Booked</option>
+                                    <option value="Fully Booked">Fully Booked</option>
                                     <option value="Holiday">Holiday</option>
                                     <option value="Available">Available</option>
                         </select>                   
@@ -232,6 +230,18 @@ include "header.html";
                             <input type="input" name="edit_event_end_time" id="edit_event_end_time" class="form-control" placeholder="Event end time">
                         </div>
                     </div>
+                    <div class="col-sm-6">  
+                    <div class="form-group">
+                        <label for="duration">Duration:</label>
+                        <input type="text" name="edit_duration" id="edit_duration" class="form-control" placeholder="Minutes">
+                    </div>
+                    </div>
+                    <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="slot_number">Number:</label>
+                        <input type="text" name="edit_num_time_slots" id="edit_num_time_slots" class="form-control" placeholder="Slots number">
+                    </div>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -246,9 +256,6 @@ include "header.html";
 
 </main>
 <br>
-<?php
-include "footer.html";
-?>
 </body>
 <script>
 $(document).ready(function() {
@@ -271,7 +278,9 @@ function display_events() {
                     event_start_time: result[i].event_start_time,
                     event_end_time: result[i].event_end_time,
                     color: result[i].color,
-                    url: result[i].url
+                    url: result[i].url,
+                    duration: result[i].duration,
+                    num_time_slots: result[i].num_time_slots
                 }); 	
             });
 
@@ -295,10 +304,13 @@ function display_events() {
                     $('#edit_event_name').val(event.title);
                     $('#edit_event_start_date').val(moment(event.start).format('YYYY-MM-DD'));
                     $('#edit_event_end_date').val(moment(event.end).format('YYYY-MM-DD'));
+                    var endTime = moment(event.event_end_time, 'HH:mm').format('HH:mm');
+                    $('#edit_duration').val(event.duration);
+                    $('#edit_num_time_slots').val(event.num_time_slots);
                     
                     if (event.event_start_time && event.event_end_time) {
-                        var startTime = moment(event.event_start_time, 'HH:mm').format('hh:mm A');
-                        var endTime = moment(event.event_end_time, 'HH:mm').format('hh:mm A');
+                        var startTime = moment(event.event_start_time, 'HH:mm').format('HH:mm');
+                        var endTime = moment(event.event_end_time, 'HH:mm').format('HH:mm');
                         // alert(startTime + " " + endTime);
                         $('#edit_event_start_time').val(startTime);
                         $('#edit_event_end_time').val(endTime);
@@ -348,8 +360,10 @@ function save_event() {
     var event_start_time = moment($("#event_start_time").val(), ["h:mm A"]).format("HH:mm");
     var event_end_time = moment($("#event_end_time").val(), ["h:mm A"]).format("HH:mm");
     var event_color = $("#event_color").val();
+    var duration = $("#duration").val();
+    var num_time_slots = $("#num_time_slots").val();
 
-    if (event_name == "" || event_start_date == "" || event_end_date == "" || event_color == "" || event_start_time == "" || event_end_time == "") {
+    if (event_name == "" || event_start_date == "" || event_end_date == "" || event_color == "") {
         alert("Please fill in all fields.");
         return false;
     }
@@ -365,6 +379,8 @@ function save_event() {
             event_start_time: event_start_time,
             event_end_time: event_end_time,
             event_color: event_color,
+            duration: duration,
+            num_time_slots : num_time_slots,
         },
         success: function(response) {
             alert(response.msg);
@@ -388,6 +404,8 @@ function update_event() {
     var event_start_time = $('#edit_event_start_time').val();
     var event_end_time = $('#edit_event_end_time').val();
     var event_color = $('#edit_event_color').val();
+    var duration = $('#edit_duration').val();
+    var num_time_slots = $('#edit_num_time_slots').val();
 
     $.ajax({
         url: "update_event.php",
@@ -400,7 +418,9 @@ function update_event() {
             edit_event_end_date: event_end_date,
             edit_event_start_time: event_start_time,
             edit_event_end_time: event_end_time,
-            edit_event_color: event_color
+            edit_event_color: event_color,
+            edit_duration: duration,
+            edit_num_time_slots: num_time_slots
         },
         success: function(response) {
             $('#edit_event_modal').modal('hide');

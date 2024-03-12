@@ -69,7 +69,7 @@
         </thead>
             <tbody>
             <?php
-                $query = "SELECT p.ProductName, p.Price, p.Description, p.productImage, i.Quantity
+                $query = "SELECT p.ProductID, p.ProductName, p.Price, p.Description, p.productImage, i.Quantity
                 FROM products p
                 INNER JOIN inventory i ON p.ProductID = i.ProductID";
                 $result = mysqli_query($conn, $query);

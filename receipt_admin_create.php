@@ -1,11 +1,6 @@
 <?php
 require 'connection.php';
 
-// if (!isset($_SESSION['admin_id'])) {
-//     header("Location: user_login.php");
-//     exit();
-// }
-
 $query = "SELECT MAX(receipt_id) AS latest_receipt_id FROM receipt";
 $result = mysqli_query($conn, $query);
 
@@ -15,8 +10,8 @@ if ($result) {
         $current_receipt_id = $row['latest_receipt_id'];
         $available_receipt_id = $current_receipt_id + 1;
     } else {
-        $current_receipt_id = 0; // Set to 0 or any default value as per your requirement
-        $available_receipt_id = 1; // Set to 1 or any initial value as per your requirement
+        $current_receipt_id = 0; 
+        $available_receipt_id = 1; 
     }
 
     $product_query = "SELECT rp.id, rp.quantity, p.ProductName, rp.cost
@@ -41,6 +36,17 @@ if ($result) {
 }
 ?>
 
+
+<?php
+$receiptDate = "";
+$sql = "SELECT receipt_date FROM receipt WHERE receipt_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $current_receipt_id);
+$stmt->execute();
+$stmt->bind_result($receiptDate);
+$stmt->fetch();
+$stmt->close();
+?>
 
 <?php 
     $query = "SELECT * FROM receipt_products";
@@ -288,18 +294,15 @@ $stmt->close();
 </section>
 <div class="create-receipt">
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <!-- Receipt ID -->
         <label for="receipt_id">Receipt ID:</label>
         <input type="text" id="receipt_id" name="receipt_id" value="<?php echo $current_receipt_id; ?>" readonly>
-
-        <!-- Receipt Date -->
         <label for="receipt_date">Receipt Date:</label>
-        <input type="date" id="receipt_date" name="receipt_date" required><br><br>
+        <input type="date" id="receipt_date" name="receipt_date" value="<?php echo $receiptDate; ?>"required><br><br>
 </div>
 
         <!-- Customer Information -->
         <div id="customer_information">
-        <h3>Customer Information<!-- Button to trigger modal -->
+        <h3>Customer Information
         <button type="button" id="select-existing-user" class="btn btn-primary" data-toggle="modal" data-target="#userModal">
             Or Select Existing User
         </button>
@@ -357,18 +360,12 @@ $stmt->close();
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- PHP code to fetch user data -->
                         <?php
-                        // Include connection.php
                         require 'connection.php';
-
-                        // Fetch user data from the user_info table
                         $query = "SELECT * FROM user_info";
                         $result = mysqli_query($conn, $query);
 
-                        // Check if there are any rows returned
                         if (mysqli_num_rows($result) > 0) {
-                            // Loop through each row and display user data in the modal table
                             while ($row = mysqli_fetch_assoc($result)) {
                                 echo "<tr>";
                                 echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>";
@@ -380,7 +377,6 @@ $stmt->close();
                                 echo "</tr>";
                             }
                         } else {
-                            // No users found
                             echo "<tr><td colspan='6'>No users found</td></tr>";
                         }
                         ?>
@@ -433,7 +429,6 @@ $stmt->close();
         echo "<td>" . $product_row['quantity'] . "</td>";
         echo "<td>" . $product_row['ProductName'] . "</td>";
         echo "<td>" . $product_row['cost'] . "</td>";
-        // Add action buttons if needed
         echo "<td><button type='button' class='btn btn-warning delete-product' data-receipt-product-id='{$product_row['id']}'>x</button></td>";
         echo "</tr>";
     }
@@ -455,7 +450,6 @@ $stmt->close();
             <label for="service_id" class="control-label">Service Name:</label>
             <select id="service_id" class="custom-select custom-select-sm select2">
                 <option selected disabled>Loading Services...</option>
-                <!-- Options for services will be populated dynamically -->
             </select>
         </div>
         <div class="form-group">
@@ -493,6 +487,7 @@ $stmt->close();
         </tr>
     </tfoot>
 </table>
+
 <div align="right" class="totalCompute">
     <strong>Subtotal:</strong>
     <span>₱<?php echo number_format($subtotal, 2); ?></span><br>
@@ -503,10 +498,7 @@ $stmt->close();
     <strong>Grand Total:</strong>
     <span id="grand_total">₱<?php echo number_format($grandtotal, 2); ?></span><br>
     
-    <!-- Back button -->
     <button type="button" id="backToReceiptLists" class="btn btn-secondary">Back (to Receipt Lists)</button>
-
-    <!-- Submit button -->
     <button type="button" id="submitReceipt" class="btn btn-primary">Submit (Receipt)</button>
 </div>
 
@@ -514,7 +506,6 @@ $stmt->close();
     <div>
 </div>
 
-    <!-- JavaScript to fetch and populate user data in the modal -->
 <script>
 
 $(document).ready(function() {
@@ -523,26 +514,24 @@ $(document).ready(function() {
         var receiptDate = $('#receipt_date').val();
         var userId = $('#user_id').val();
         var receiptId = $('#receipt_id').val();
-        
+        var receiptDate = $('#receipt_date').val();
         // Prepare data to send to server
         var data = {
             receiptDate: receiptDate,
             userId: userId,
-            receiptId: receiptId
+            receiptId: receiptId,
+            receiptDate: receiptDate
         };
         
-        // Send AJAX request to insert data into receipt table
         $.ajax({
             url: 'receipt_admin_lock_user.php',
             method: 'POST',
             data: data,
             success: function(response) {
-                // Handle success
                 console.log('Receipt inserted successfully:', response);
                 location.reload();
             },
             error: function(xhr, status, error) {
-                // Handle error
                 console.error('Error inserting receipt:', error);
                 alert("Please fill in all fields.")
             }
@@ -551,7 +540,6 @@ $(document).ready(function() {
 });
 
         $(document).on("click", ".select-user", function() {
-        // Get the user data from the button's data attributes
         var user_id = $(this).data('user_id');
         var firstName = $(this).data('firstname');
         var lastName = $(this).data('lastname');
@@ -560,7 +548,6 @@ $(document).ready(function() {
         var address = $(this).data('address');
         var city = $(this).data('city');        
         
-        // Set the selected user data in the form fields or perform any other action
         $('#first_name').val(firstName);
         $('#last_name').val(lastName);
         $('#email').val(email);
@@ -568,31 +555,25 @@ $(document).ready(function() {
         $('#address').val(address);
         $('#city').val(city);
         $('#user_id').val(user_id);
-        
-        // Close the modal
         $('#userModal').modal('hide');
     });
 
     $(document).ready(function() {
-    // AJAX call to fetch products
     $.ajax({
-        url: 'receipt_products_get.php', // Path to your PHP file
+        url: 'receipt_products_get.php',
         method: 'GET',
         dataType: 'json',
         success: function(response) {
-            // Clear the dropdown
             $('#form_id').empty();
-            // Add each product as an option to the dropdown
             $.each(response, function(index, product) {
                 $('#form_id').append($('<option>', {
                     value: product.id,
                     text: product.name,
-                    'data-price': product.price // Set data attribute for price
+                    'data-price': product.price
                 }));
             });
-            // Update the price display for the first product
             if (response.length > 0) {
-                $('#price').val(response[0].price); // Set the price input field value
+                $('#price').val(response[0].price);
             }
         },
         error: function(xhr, status, error) {
@@ -601,51 +582,41 @@ $(document).ready(function() {
     });
 
     $(document).ready(function() {
-    // AJAX call to fetch services
     $.ajax({
-        url: 'receipt_services_get.php', // Path to your PHP file that fetches services
+        url: 'receipt_services_get.php',
         method: 'GET',
         dataType: 'json',
         success: function(response) {
-            // Check if response is an array
-            if (Array.isArray(response)) {
-                // Clear the dropdown
-                $('#service_id').empty();
-                // Add each service as an option to the dropdown
-                response.forEach(function(service) {
-                    $('#service_id').append($('<option>', {
-                        value: service.id,
-                        text: service.name
-                    }));
-                });
-            } else {
-                console.error('Invalid response format:', response);
+            $('#service_id').empty();
+            $.each(response, function(index, service) {
+                $('#service_id').append($('<option>', {
+                    value: service.id,
+                    text: service.name,
+                    'data-price': service.cost
+                }));
+            });
+            if (response.length > 0) {
+                $('#service_cost').val(response[0].cost);
             }
         },
         error: function(xhr, status, error) {
-            console.error('Error fetching services:', error); // Log any errors to the console
+            console.error('Error fetching services:', error);
         }
     });
 });
 
-
-    // Event listener for when a different product is selected
     $('#form_id').change(function() {
         var selectedProductId = $(this).val();
-        var selectedProductPrice = $(this).find(':selected').data('price'); // Get the price from data attribute
-        $('#price').val(selectedProductPrice); // Update the price input field value
+        var selectedProductPrice = $(this).find(':selected').data('price');
+        $('#price').val(selectedProductPrice);
     });
 
-    // Event listener for the "Add" button
     $('#add_product_row').click(function() {
-        // Retrieve selected product ID, quantity, and price
         var productId = $('#form_id').val();
         var quantity = $('#qty').val();
         var price = $('#price').val();
-        
-        // Send data to server-side script for insertion
         $.ajax({
-            url: 'receipt_product_insert.php', // Replace 'insert_product.php' with your server-side script
+            url: 'receipt_product_insert.php',
             method: 'POST',
             data: {
                 productId: productId,
@@ -653,57 +624,43 @@ $(document).ready(function() {
                 price: price
             },
             success: function(response) {
-                // Handle success (if needed)
                 console.log('Product added successfully:', response);
                 location.reload();
             },
             error: function(xhr, status, error) {
-                // Handle error (if needed)
                 console.error('Error adding product:', error);
             }
         });
     });
 });
 
-
 $(document).ready(function() {
-    // Event listener for the "Add" button
     $('#add_product_row').click(function() {
-        // Retrieve selected product ID, quantity, and calculate cost
         var productId = $('#form_id').val();
         var quantity = $('#qty').val();
         var cost = $('#cost').val();
-        
-        // Validate inputs
         if (!productId || !quantity || quantity < 1) {
             alert('Please select a product and enter a valid quantity.');
             return;
         }
         
-        // Calculate cost
         var cost = parseFloat($('#form_id option:selected').data('price')) * quantity;
         
-        // Prepare data to send to server
         var data = {
-            receipt_id: <?php echo $current_receipt_id; ?>, // Assuming $latest_receipt_id contains the current receipt ID
+            receipt_id: <?php echo $current_receipt_id; ?>,
             productId: productId,
             quantity: quantity,
             cost: cost
         };
         
-        // Send data to server-side script for insertion
         $.ajax({
             url: 'receipt_product_insert.php',
             method: 'POST',
             data: data,
             success: function(response) {
-                // Handle success
                 console.log('Product added successfully:', response);
-                location.reload();
-                // Optional: You can update the UI to reflect the added product if needed
-            },
+                location.reload();            },
             error: function(xhr, status, error) {
-                // Handle error
                 console.error('Error adding product:', error);
             }
         });
@@ -711,39 +668,40 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-    // Event listener for the "Add" button for services
+    $('#service_id').change(function() {
+        var selectedServiceId = $(this).val();
+        var selectedServicePrice = $(this).find(':selected').data('price');
+        $('#service_cost').val(selectedServicePrice);
+    });
+});
+
+
+$(document).ready(function() {
     $('#add_service_row').click(function() {
-        // Retrieve selected service name, cost, and receipt_id
         var serviceID = $('#service_id').val();
         var serviceCost = $('#service_cost').val();
-        var receiptId = <?php echo $current_receipt_id; ?>; // Assuming $current_receipt_id contains the current receipt ID
+        var receiptId = <?php echo $current_receipt_id; ?>; 
         
-        // Validate inputs
         if (!serviceID || !serviceCost || serviceCost < 0) {
             alert('Please enter a valid service name and cost.');
             return;
         }
         
-        // Prepare data to send to server
         var data = {
             serviceId: serviceID,
             receipt_id: receiptId,
             cost: serviceCost
         };
         
-        // Send data to server-side script for insertion
         $.ajax({
-            url: 'receipt_service_insert.php', // Replace with the path to your PHP file handling the insertion
+            url: 'receipt_service_insert.php',
             method: 'POST',
             data: data,
             success: function(response) {
-                // Handle success
                 console.log('Service added successfully:', response);
                 location.reload();
-                // Optional: You can update the UI to reflect the added service if needed
             },
             error: function(xhr, status, error) {
-                // Handle error
                 console.error('Error adding service:', error);
             }
         });
@@ -752,54 +710,40 @@ $(document).ready(function() {
 
 $(document).ready(function() {
 
- // Function to update total amount
 function updateProductsTotalAmount() {
     var total = 0;
-    // Iterate through each row in the table
     $('#products_table tbody tr').each(function() {
-        // Extract cost from the current row and remove the dollar sign
         var cost = parseFloat($(this).find('td:eq(2)').text().replace('$', ''));
-        // Add cost to the total
         total += cost;
     });
-    // Update the total amount displayed
-    $('#products_total_amount').text('₱' + total.toFixed(2)); // Add the dollar sign back and round to 2 decimal places
+    $('#products_total_amount').text('₱' + total.toFixed(2));
 }
 
-    // Call updateTotalAmount initially to set the total amount to 0
     updateProductsTotalAmount();
 
     function updateServicesTotalAmount() {
     var total = 0;
-    // Iterate through each row in the table
     $('#services_table tbody tr').each(function() {
-        // Extract cost from the current row and remove the dollar sign
         var cost = parseFloat($(this).find('td:eq(1)').text().replace('$', ''));
-        // Add cost to the total
         total += cost;
     });
-    // Update the total amount displayed
-    $('#services_total_amount').text('₱' + total.toFixed(2)); // Add the dollar sign back and round to 2 decimal places
+    $('#services_total_amount').text('₱' + total.toFixed(2));
 }
 updateServicesTotalAmount();
 
     $('.delete-product').click(function() {
-        var button = $(this); // Store reference to the button element
+        var button = $(this); 
         
         var receiptProductId = button.data('receipt-product-id');
-        
-            // Send AJAX request to delete the product
             $.ajax({
-                url: 'receipt_product_delete.php', // Replace with the path to your PHP file handling the deletion
+                url: 'receipt_product_delete.php',
                 method: 'POST',
                 data: {
                     receiptProductId: receiptProductId
                 },
                 success: function(response) {
-                    // Refresh the page or update the table as needed
-                    // For example, you can remove the row from the table
                     if (response === 'success') {
-                        button.closest('tr').remove(); // Remove the row from the table using the stored button reference
+                        button.closest('tr').remove();
                         alert('Product deleted successfully.');
                         location.reload();
                     } else {
@@ -816,21 +760,18 @@ updateServicesTotalAmount();
 });
 
 $('.delete-service').click(function() {
-        var button = $(this); // Store reference to the button element
+        var button = $(this);
         
         var receiptServiceId = button.data('receipt-service-id');
-            // Send AJAX request to delete the product
             $.ajax({
-                url: 'receipt_service_delete.php', // Replace with the path to your PHP file handling the deletion
+                url: 'receipt_service_delete.php',
                 method: 'POST',
                 data: {
                     receiptServiceId: receiptServiceId
                 },
                 success: function(response) {
-                    // Refresh the page or update the table as needed
-                    // For example, you can remove the row from the table
                     if (response === 'success') {
-                        button.closest('tr').remove(); // Remove the row from the table using the stored button reference
+                        button.closest('tr').remove(); 
                         alert('Service deleted successfully.');
                         location.reload();
                     } else {
@@ -847,31 +788,25 @@ $('.delete-service').click(function() {
 
     $(document).ready(function() {
     $('#submitReceipt').click(function() {
-        // Retrieve the grand total value
         var grandTotal = parseFloat($('#grand_total').text().replace('₱', '').replace(',', ''));
+        var currentReceiptId = $('#receipt_id').val();
+        var selectedProductId = $('#form_id').val();
 
-        // Retrieve other necessary data from the inputs
-        var currentReceiptId = $('#receipt_id').val(); // Assuming you have an input field with ID currentReceiptId
-
-        // Prepare data to send to server
         var data = {
             grandTotal: grandTotal,
-            currentReceiptId: currentReceiptId
+            currentReceiptId: currentReceiptId,
+            selectedProductId: selectedProductId
         };
 
-        // Send AJAX request to update the receipt and generate PDF
         $.ajax({
             url: 'receipt_admin_submit.php',
             method: 'POST',
             data: data,
             success: function(response) {
-                // Handle success
                 console.log('Receipt saved successfully:', response);
-                // Optionally, perform any additional actions after updating
                 generatePDF();
             },
             error: function(xhr, status, error) {
-                // Handle error
                 console.error('Error updating receipt:', error);
             }
         });
@@ -879,17 +814,15 @@ $('.delete-service').click(function() {
 });
 
 function generatePDF() {
-    // Send AJAX request to generate PDF
     $.ajax({
         url: 'receipt_print.php',
         method: 'POST',
         data: {
-            // Pass any additional data needed for generating PDF
             grandTotal: parseFloat($('#grand_total').text().replace('₱', '').replace(',', '')),
-            currentReceiptId: $('#receipt_id').val() // Assuming you have an input field with ID currentReceiptId
+            currentReceiptId: $('#receipt_id').val()
         },
         success: function(pdfUrl) {
-            window.open(pdfUrl, '_blank'); // Open PDF in a new tab
+            window.open(pdfUrl, '_blank');
             location.reload();
         },
         error: function(xhr, status, error) {

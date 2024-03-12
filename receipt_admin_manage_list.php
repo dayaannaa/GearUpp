@@ -117,7 +117,8 @@ if (mysqli_num_rows($result) > 0) {
         echo "<td>" . $details . "</td>";
         
         echo '<td style="display: flex; justify-content: space-between; align-items: center;">';
-        echo '<a href="../GearUp/' . $row["receipt_image"] . '" target="_blank">View PDF</a>';
+        echo '<a href="../Gear
+        Up/' . $row["receipt_image"] . '" target="_blank">View PDF</a>';
         echo '</td>';
         echo '<td><a href="receipt_admin_edit_list.php?id=' . $row["receipt_id"] . '" class="btn btn-secondary mr-2 bg-black">Edit</a> </td>';
         echo '<td><a href="receipt_admin_delete_list.php?id=' . $row["receipt_id"] . '" class="btn mr-2 bg-danger text-white">Delete</a></td>';

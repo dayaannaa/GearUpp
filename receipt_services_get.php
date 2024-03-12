@@ -15,6 +15,7 @@ if (mysqli_num_rows($result) > 0) {
         $service = array(
             'id' => $row['ServiceID'],
             'name' => $row['ServiceName'],
+            'cost' => $row['Price']
         );
         // Add service to services array
         $services[] = $service;

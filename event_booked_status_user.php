@@ -1,61 +1,62 @@
 <?php
 require 'connection.php';
 
-if(isset($_POST['eventId']) && !empty($_POST['eventId']) && isset($_POST['userId']) && !empty($_POST['userId']) && isset($_POST['balance']) && !empty($_POST['balance'])) {
+if(isset($_POST['eventId'], $_POST['userId'], $_POST['balance'], $_POST['startTime'], $_POST['endTime'], $_POST['serviceId'])) {
     $eventId = $_POST['eventId'];
+    $serviceId = $_POST['serviceId'];
     $userId = $_POST['userId'];
     $balance = $_POST['balance'];
+    $startTime = $_POST['startTime'];
+    $endTime = $_POST['endTime'];
+
     $amount = $balance - 200;
-    $paymentDate = date('Y-m-d H:i:s');
-    
-    $updateQuery = "UPDATE calendar_event_master 
-                    SET event_name = 'Booked', 
-                        event_color = '#ff6767' 
-                    WHERE event_id = ?";
-    $stmtUpdate = $conn->prepare($updateQuery);
-    $stmtUpdate->bind_param("i", $eventId);
 
-    if ($stmtUpdate->execute()) {
-        $insertAppointmentQuery = "INSERT INTO appointment (user_id, event_id) VALUES (?, ?)";
-        $stmtAppointment = $conn->prepare($insertAppointmentQuery);
-        $stmtAppointment->bind_param("ii", $userId, $eventId);
+    $status = "Pending";
 
-        if ($stmtAppointment->execute()) {
-            $appointmentId = $stmtAppointment->insert_id;
+    $insertQuery = "INSERT INTO appointment (event_id, user_id, start_time, end_time, ServiceID, status) 
+                    VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($insertQuery);
+    $stmt->bind_param("iissis", $eventId, $userId, $startTime, $endTime, $serviceId, $status);
 
-            $insertPaymentQuery = "INSERT INTO payment (appointment_id, amount, payment_date) VALUES (?, ?, ?)";
-            $stmtPayment = $conn->prepare($insertPaymentQuery);
-            $stmtPayment->bind_param("ids", $appointmentId, $amount, $paymentDate);
+    if ($stmt->execute()) {
 
-            if ($stmtPayment->execute()) {
-                $response = array(
-                    'status' => true,
-                    'msg' => 'Appointment Slot Successfully Booked! Payment made.'
-                );
-            } else {
-                $response = array(
-                    'status' => false,
-                    'msg' => 'Failed to insert into payment table: ' . $conn->error
-                );
-            }
-        } else {
-            $response = array(
-                'status' => false,
-                'msg' => 'Failed to insert into appointment table: ' . $conn->error
-            );
+        $query = "SELECT num_time_slots FROM calendar_event_master WHERE event_id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $eventId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $numTimeSlots = $row['num_time_slots'];
+
+        $numTimeSlots--;
+
+        $updateSlotsQuery = "UPDATE calendar_event_master SET num_time_slots = ? WHERE event_id = ?";
+        $stmt = $conn->prepare($updateSlotsQuery);
+        $stmt->bind_param("ii", $numTimeSlots, $eventId);
+        $stmt->execute();
+
+        if ($numTimeSlots == 0) {
+            $updateEventQuery = "UPDATE calendar_event_master SET event_name = 'Fully Booked', event_color = '#ff6767' WHERE event_id = ?";
+            $stmt = $conn->prepare($updateEventQuery);
+            $stmt->bind_param("i", $eventId);
+            $stmt->execute();
         }
+    
+        $response = array(
+            'status' => true,
+            'msg' => 'Appointment created successfully'
+        );
     } else {
         $response = array(
             'status' => false,
-            'msg' => 'Failed to update event status: ' . $conn->error
+            'msg' => 'Failed to create appointment: ' . $conn->error
         );
     }
 } else {
     $response = array(
         'status' => false,
-        'msg' => 'Event ID, User ID, or Balance is missing'
+        'msg' => 'Missing required parameters'
     );
 }
-
 echo json_encode($response);
 ?>

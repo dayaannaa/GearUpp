@@ -2,6 +2,14 @@ CREATE DATABASE gearup;
 
 USE gearup;
 
+CREATE TABLE `super_admin_account` (
+  `super_admin_id` int PRIMARY KEY AUTO_INCREMENT,
+  `email` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL
+);
+
+INSERT INTO super_admin_account VALUES (1, 'show.owner', 'shop.owner');
+
 CREATE TABLE `admin_account` (
   `admin_id` int PRIMARY KEY AUTO_INCREMENT,
   `email` varchar(50) DEFAULT NULL,
@@ -26,20 +34,67 @@ CREATE TABLE `user_info` (
   `user_image` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+INSERT INTO user_info VALUES (1, 'Michael', 'Angelo', '09983745143', 'CP TINGA St.', 'Taguig', 'michael.angelo', 'user', DEFAULT);
+
+CREATE TABLE `supplier` (
+  `SupplierID` int PRIMARY KEY AUTO_INCREMENT,
+  `SupplierName` varchar(100) DEFAULT NULL,
+  `SupplierEmail` varchar(100) DEFAULT NULL,
+  `ContactNum` varchar(20) DEFAULT NULL,
+  `supplier_image` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 CREATE TABLE calendar_event_master (
     `event_id` int PRIMARY KEY AUTO_INCREMENT,
     `event_name` VARCHAR(15) DEFAULT NULL,
     `event_start_date` DATE DEFAULT NULL,
     `event_end_date` DATE DEFAULT NULL,
-    `event_start_time` TIME DEFAULT NULL,
-    `event_end_time` TIME DEFAULT NULL,
-    `event_color` VARCHAR(20)
+    `event_start_time` TIME,
+    `event_end_time` TIME,
+    `event_color` VARCHAR(20),
+    `num_time_slots` VARCHAR (20),
+    `duration` INT
 );
+
+CREATE TABLE `products` (
+  `ProductID` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `ProductName` varchar(100) DEFAULT NULL,
+  `Price` decimal(10,2) DEFAULT NULL,
+  `productImage` VARCHAR(25) DEFAULT NULL,
+  `Description` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO products VALUES (1, 'Headlight Cover', 150, DEFAULT, 'It is the protective outer layer that covers the headlight bulb and other internal components');
+
+CREATE TABLE `inventory` (
+  `InventoryID` int(11) NOT NULL,
+  `ProductID` int(11) NOT NULL,
+  `Quantity` int(11) DEFAULT NULL,
+  FOREIGN KEY (ProductID) REFERENCES products(ProductID) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO inventory VALUES (1, 1, 100);
+
+CREATE TABLE `services` (
+  `ServiceID` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `ServiceName` varchar(100) DEFAULT NULL,
+  `Description` text DEFAULT NULL,
+  `Price` decimal(10,2) DEFAULT NULL,
+  `serviceImage` VARCHAR(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO services VALUES (1, 'Electrical System Diagnostics', 'Identify electrical system issues of the vehicle such as wiring, lighting and other electrical components.', 700, DEFAULT);
 
 CREATE TABLE `appointment` (
   `appointment_id` int PRIMARY KEY AUTO_INCREMENT,
   `user_id` int,
   `event_id` INT,
+  `start_time` TIME,
+  `end_time` TIME,
+  `status` VARCHAR (20),
+  `ServiceID` INT,
+  FOREIGN KEY (ServiceID) REFERENCES services(ServiceID) ON DELETE CASCADE,
   FOREIGN KEY (event_id) REFERENCES calendar_event_master(event_id) ON DELETE CASCADE,
   FOREIGN KEY (user_id) REFERENCES user_info(user_id) ON DELETE CASCADE
 );
@@ -52,25 +107,6 @@ CREATE TABLE `payment` (
   FOREIGN KEY (appointment_id) REFERENCES appointment(appointment_id) ON DELETE CASCADE
 );
 
--- CREATE TABLE legends (
---     legend_id INT PRIMARY KEY AUTO_INCREMENT,
---     name VARCHAR(255) NOT NULL,
---     color VARCHAR(20) NOT NULL
--- );
-
-CREATE TABLE `products` (
-  `ProductID` int(11) PRIMARY KEY AUTO_INCREMENT,
-  `ProductName` varchar(100) DEFAULT NULL,
-  `Price` decimal(10,2) DEFAULT NULL,
-  `productImage` VARCHAR(25) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE `services` (
-  `ServiceID` int(11) PRIMARY KEY AUTO_INCREMENT,
-  `ServiceName` varchar(100) DEFAULT NULL,
-  `serviceImage` VARCHAR(25) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 CREATE TABLE `receipt` (
   `receipt_id` INT PRIMARY KEY AUTO_INCREMENT,
   `receipt_date` DATE,
@@ -80,6 +116,8 @@ CREATE TABLE `receipt` (
   `user_id` INT,
   FOREIGN KEY (`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE
 );
+
+INSERT INTO receipt(receipt_id) VALUES (1);
 
 CREATE TABLE `receipt_products` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,

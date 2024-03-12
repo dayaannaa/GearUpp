@@ -8,6 +8,8 @@ $event_end_date = $_POST['edit_event_end_date'];
 $event_start_time = $_POST['edit_event_start_time'];
 $event_end_time = $_POST['edit_event_end_time'];
 $event_color = $_POST['edit_event_color'];  
+$duration = $_POST['edit_duration'];  
+$num_time_slots = $_POST['edit_num_time_slots'];  
 
 // Update the event in the database
 $update_query = "UPDATE calendar_event_master SET 
@@ -16,7 +18,9 @@ $update_query = "UPDATE calendar_event_master SET
                     event_start_date = '$event_start_date', 
                     event_end_date = '$event_end_date', 
                     event_start_time = '$event_start_time', 
-                    event_end_time = '$event_end_time' 
+                    event_end_time = '$event_end_time', 
+                    duration = '$duration', 
+                    num_time_slots = '$num_time_slots'
                     WHERE event_id = $event_id";
 
 if(mysqli_query($conn, $update_query)) {
