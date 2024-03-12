@@ -1,0 +1,138 @@
+<?php
+include "connection.php";
+
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Validate input
+    $product_id = $_POST['product_id'];
+    $availability = $_POST['availability'];
+
+    // Update availability in the database
+    $sql = "UPDATE Products SET ProdAvailability = '$availability' WHERE ProductID = '$product_id'";
+
+    if (mysqli_query($conn, $sql)) {
+        echo "<div class='container' data-aos='fade-up'><p>Availability updated successfully.</p></div>";
+    } else {
+        echo "<div class='container' data-aos='fade-up'><p>Error updating availability: " . mysqli_error($conn) . "</p></div>";
+    }
+
+    mysqli_close($conn);
+    exit; // Terminate script after processing form submission
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Update Product Availability</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      margin-top: 10px; /* Adjusted margin top */
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+    header {
+    height: 70px; /* Adjust this value to match the size of the header in products.php */
+    }
+  </style>
+</head>
+<body>
+  <?php include "header.html"; ?>
+
+  <main id="main">
+    <section id="product-list">
+      <div class="container" data-aos="fade-up">
+        <h2>Products</h2>
+        <div class="row">
+          <?php
+          $sql = "SELECT ProductID, ProductName, Price, ProductImage, ProdAvailability FROM Products";
+          $result = mysqli_query($conn, $sql);
+
+          if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+              echo '<div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">';
+              echo '<div class="icon-box">';
+              echo "<a href='ProductDescription.php?ProductName=" . urlencode($row["ProductName"]) . "'>";
+              echo "<img src='data:image/jpeg;base64," . base64_encode($row["ProductImage"]) . "' alt='" . $row["ProductName"] . "' style='width: 300px; height: 150px;'><br>";
+              echo $row["ProductName"] . "</a><br>";  
+              echo '<p>₱' . $row["Price"] . '</p>';
+              
+              // Display availability status
+              if ($row["ProdAvailability"] == 1) {
+                echo '<p style="color: green;">Available</p>';
+              } else {
+                echo '<p style="color: red;">Not Available</p>';
+              }
+
+              // Update availability form
+              echo '<form action="update_availability.php" method="post">';
+              echo '<input type="hidden" name="product_id" value="' . $row["ProductID"] . '">';
+              echo '<input type="hidden" name="ProductName" value="' . $row["ProductName"] . '">';
+              echo '<label for="availability">Availability:</label>';
+              echo '<select id="availability" name="availability">';
+              echo '<option value="1">Available</option>';
+              echo '<option value="0">Not Available</option>';
+              echo '</select>';
+              echo '<button type="submit">Update Availability</button>';
+              echo '</form>';
+              
+              echo '</div>';
+              echo '</div>';
+            }
+          } else {
+            echo "No Products found";
+          }
+
+          mysqli_close($conn);
+          ?>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <?php include "footer.html"; ?>
+</body>
+</html>
+
+

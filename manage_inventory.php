@@ -22,7 +22,10 @@
 </head>
 <style>
     .table-fill {
-        margin-left: 450px;
+        margin-left: 300px;
+    }
+    .td {
+        height: auto;
     }
 </style>
 <body>
@@ -42,26 +45,37 @@
 
 <main id="main">
 
-<section class="breadcrumbs">
-    <div class="container">
+    <section class="breadcrumbs">
+        <div class="container">
 
-    <div class="d-flex justify-content-between align-items-center">
-      <h2>Inventory Management</h2>
-      <ol>
-        <li><a href="admin_dash.php">Home</a></li>
-        <li>Inventory</li>
-      </ol>
-    </div>
-    </div>
-</section>
+        <div class="d-flex justify-content-between align-items-center">
+        <h2>Inventory Management</h2>
+        <ol>
+            <li><a href="admin_dash.php">Home</a></li>
+            <li>Inventory</li>
+        </ol>
+        </div>
+        </div>
+    </section>
 
-<table class="table-fill">
+    <div class="container mt-3">
+        <form method="GET" action="">
+            <div class="mb-3">
+                <label for="search" class="form-label">Search Products:</label>
+                <input type="text" class="form-control" id="search" name="search" placeholder="Enter email or ID">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    <table class="table-fill">
         <thead>
             <tr>
                 <th class="text-center">ID</th>
-                <th class="text-center">Product Name</th>
-                <th class="text-center">Price</th>>
                 <th class="text-center">Image</th>
+                <th class="text-center">Product Name</th>
+                <th class="text-center">Description</th>
+                <th class="text-center">Price</th>
                 <th class="text-center">Quantity</th>
                 <th><a href="inventory_create.php" class="btn btn-secondary mr-2 bg-black">Create</a></th>
                 <th><a href="inventory_update.php" class="btn btn-secondary mr-2 bg-black">Update</a></th>
@@ -69,23 +83,33 @@
         </thead>
             <tbody>
             <?php
+<<<<<<< HEAD
+=======
+
+                $search_query = isset($_GET['search']) ? $_GET['search'] : '';
+
+>>>>>>> a6b47e04280b9adf53e005fabcdd9c54da16bc79
                 $query = "SELECT p.ProductID, p.ProductName, p.Price, p.Description, p.productImage, i.Quantity
                 FROM products p
                 INNER JOIN inventory i ON p.ProductID = i.ProductID";
+                    if (!empty($search_query)) {
+                        $query .= " WHERE ProductName LIKE '%$search_query%' OR Price LIKE '%$search_query%' OR Quantity LIKE '%$search_query%' OR Description LIKE '%$search_query%'";
+                    }
                 $result = mysqli_query($conn, $query);
             
                                 if (mysqli_num_rows($result) > 0) {
                                     while ($row = mysqli_fetch_assoc($result)) {
                                         echo '<tr>';
                                         echo "<td class=text-center>" . $row["ProductID"] . "</td>";
-                                        echo "<td class=text-center>" . $row["ProductName"] . "</td>";
-                                        echo "<td class=text-center>" . $row["Price"] . "</td>";
                                         echo '<td style="display: flex; justify-content: space-between; align-items: center;">';
-                                        $imageFilenames = explode(',', $row['productImage']);
+                                        $imageFilenames = explode(',', $row['productImage']);   
                                         foreach ($imageFilenames as $filename) {
                                             echo '<img src="../GearUp/uploads/' . $filename . '" width="100" height="100"  style="margin-right: 5px;">';
                                         }
-                                        echo "<td class=text-center>" . $row["Price"] . "</td>";                           
+                                        echo "<td class=text-center>" . $row["ProductName"] . "</td>";
+                                        echo "<td class=text-center>" . $row["Description"] . "</td>";
+                                        echo "<td class=text-center>" . $row["Price"] . "</td>";
+                                        echo "<td class=text-center>" . $row["Quantity"] . "</td>";                                                
                                         echo '</td>';
                                         echo '<td colspan="3" class=text-center><a href="inventory_delete.php?id=' . $row["ProductID"] . '" class="btn btn-secondary mr-2 bg-danger">Delete</a></td>';
                                         echo "</tr>";
@@ -94,9 +118,9 @@
                                     echo "<tr><td class=text-center colspan='8'>No records found</td></tr>";
                                 }
                                 mysqli_close($conn);
-                    ?>
-                    <tr>
-                    </tr>
+            ?>  
+                <tr>
+                </tr>
             </tbody>
         </table>
 </body>

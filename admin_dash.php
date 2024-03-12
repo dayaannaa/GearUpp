@@ -16,38 +16,120 @@
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 
-  <link href="assets/css/style.css" rel="stylesheet"><!--<header id="header" class="fixed-top header-inner-pages bg-black">
-    <header id="header" class="fixed-top header-inner-pages bg-black">
-    <div class="container d-flex align-items-center justify-content-lg-between">
-
-    <h1 class="logo me-auto me-lg-0"><a href="ui.php">GearUp<span>.</span></a></h1>
-    <nav id="navbar" class="navbar order-last order-lg-0">
-      <ul>
-              <li><a class="nav-link scrollto" href="user_profile.php"><i class="fa-solid fa-user"></i></a></li>
-      </ul>
-        </nav>
-      </div>
-    </header> -->
+  <link href="assets/css/style.css" rel="stylesheet">
 </head>
+<style>
+    h1 {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .icon-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .icon-box .material-symbols-outlined {
+      font-size: 30px; 
+      order: 2;
+    }
+
+    .icon-box-content {
+      order: 1; 
+    }
+    
+</style>
 <body>
+
+  <?php
+  include "connection.php";
+
+    function getCount($conn, $tableName) {
+      $sql = "SELECT COUNT(*) AS count FROM " . $tableName;
+      $result = $conn->query($sql);
+
+      if ($result && $row = $result->fetch_assoc()) {
+          return $row['count'];
+      }
+
+      return 0;
+    }
+
+    $adminsCount = getCount($conn, "admin_account");
+    $usersCount = getCount($conn, "user_info");
+    $appointmentsCount = getCount($conn, "appointment");
+    $productsCount = getCount($conn, "products");
+    $suppliersCount = getCount($conn, "supplier");
+
+    $conn->close();
+  ?>
+
 <section id="hero" class="d-flex align-items-center justify-content-center">
     <div class="container">
 
-      <div class="row justify-content-center">
+    <div class="row justify-content-center">
         <div>
           <h1>Elevate With GearUp<span>.</span></h1>
         </div>
       </div>
-</div>
+
+      <div class="row gy-4 mt-5 justify-content-center" data-aos="zoom-in" data-aos-delay="250">
+      <div class="col-xl-3 col-md-4">
+        <div class="icon-box">
+          <span class="material-symbols-outlined text-warning col-xl-4 col-md-4">dashboard</span>
+          <div class="icon-box-content">
+            <p class="text-white fs-4"><?php echo $adminsCount; ?></p> 
+            <h3><a href="manage_admins.php">Admins</a></h3>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-xl-4 col-md-4">
+        <div class="icon-box">
+          <span class="material-symbols-outlined text-warning col-xl-4 col-md-4">schedule</span>
+          <div class="icon-box-content">
+            <p class="text-white fs-4"><?php echo $appointmentsCount; ?></p> 
+            <h3><a href="">Appointment</a></h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-4">
+        <div class="icon-box">
+          <span class="material-symbols-outlined text-warning col-xl-4 col-md-4">person</span>
+          <div class="icon-box-content">
+            <p class="text-white fs-4"><?php echo $usersCount; ?></p> 
+            <h3><a href="manage_users.php">Users</a></h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6">
+        <div class="icon-box">
+          <span class="material-symbols-outlined text-warning">inventory</span>
+          <div class="icon-box-content">
+            <p class="text-white fs-4"><?php echo $productsCount; ?></p> 
+            <h3><a href="">Products</a></h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6">
+        <div class="icon-box">
+          <span class="material-symbols-outlined text-warning">group</span>
+          <div class="icon-box-content">
+            <p class="text-white fs-4"><?php echo $suppliersCount; ?></p> 
+            <h3><a href="">Supplier </a></h3>
+          </div>
+        </div>
+      </div>
+    </div>
 </section>
 
 <?php
-include "sidebar.html";
+  include "sidebar.html";
+  include "footer.html";
 ?>
-<?php
-include "footer.html";
-?>
-
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

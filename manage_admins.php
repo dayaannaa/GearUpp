@@ -43,7 +43,7 @@
         exit();
     }
     ?>
- <section class="breadcrumbs">
+    <section class="breadcrumbs">
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
@@ -55,20 +55,42 @@
         </div>
       </div>
     </section>
-</div>
+
+    <div class="container mt-3">
+        <form method="GET" action="">
+            <div class="mb-3">
+                <label for="search" class="form-label">Search Admins:</label>
+                <input type="text" class="form-control" id="search" name="search" placeholder="Search email or ID">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+    
+    <!-- <div class="container mt-3 input-group">
+    <span class="input-group-text" id="basic-addon1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
+        </svg>
+    </span>
+    <input type="text" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="basic-addon1">
+    </div> -->
+
     <table class="table-fill">
         <thead>
             <tr>
                 <th class="text-center">ID</th>
+                <th class="text-center">Image</th>
                 <th class="text-center">Email</th>
                 <th class="text-center">Password</th>>
-                <th >Image</th>
                 <th><a href="admin_create.php" class="btn btn-secondary mr-2 bg-black">Create</a></th>
                 <th><a href="admin_update.php" class="btn btn-secondary mr-2 bg-black">Update</a></th>
             </tr>
         </thead>
             <tbody>
                 <?php
+
+                    $search_query = isset($_GET['search']) ? $_GET['search'] : '';
+
                         if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
                             $id = $_GET["id"];
                     
@@ -79,26 +101,31 @@
                                 echo "Error deleting record: " . mysqli_error($conn);
                             }
                         }
+
+
                     $sql = "SELECT * FROM admin_account";
+                    if (!empty($search_query)) {
+                        $sql .= " WHERE email LIKE '%$search_query%' OR admin_id = '$search_query'";
+                    }
                     $result = mysqli_query($conn, $sql);
 
                     if (mysqli_num_rows($result) > 0) {
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo '<tr>';
                             echo "<td class=text-center>" . $row["admin_id"] . "</td>";
-                            echo "<td class=text-center>" . $row["email"] . "</td>";
-                            echo "<td class=text-center>" . $row["password"] . "</td>";
                             echo '<td style="display: flex; justify-content: space-between; align-items: center;">';
                             $imageFilenames = explode(',', $row['admin_image']);
                             foreach ($imageFilenames as $filename) {
                                 echo '<img src="../GearUp/uploads/' . $filename . '" width="100" height="100"  style="margin-right: 5px;">';
-                            }                           
+                            }
+                            echo "<td class=text-center>" . $row["email"] . "</td>";
+                            echo "<td class=text-center>" . $row["password"] . "</td>";                          
                             echo '</td>';
                             echo '<td colspan="3" class=text-center><a href="admin_delete.php?id=' . $row["admin_id"] . '" class="btn btn-secondary mr-2 bg-danger">Delete</a></td>';
                             echo "</tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='4'>No records found</td></tr>";
+                        echo "<tr><td class=text-center colspan='6'>No records found</td></tr>";
                     }
                     mysqli_close($conn);
                 ?>

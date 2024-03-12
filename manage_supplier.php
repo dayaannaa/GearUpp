@@ -40,7 +40,6 @@
     ?>
 
     <main id="main">
-
     <section class="breadcrumbs">
         <div class="container">
 
@@ -54,20 +53,33 @@
         </div>
     </section>
 
+    <div class="container mt-3">
+        <form method="GET" action="">
+            <div class="mb-3">
+                <label for="search" class="form-label">Search Products:</label>
+                <input type="text" class="form-control" id="search" name="search" placeholder="Enter email or ID">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
     <table class="table-fill">
         <thead>
             <tr>
                 <th class="text-center">ID</th>
+                <th class="text-center">Image</th>
                 <th class="text-center">Name</th>
                 <th class="text-center">Email</th>>
                 <th class="text-center">Password</th>>
-                <th class="text-center">Image</th>
                 <th><a href="supplier_create.php" class="btn btn-secondary mr-2 bg-black">Create</a></th>
                 <th><a href="supplier_update.php" class="btn btn-secondary mr-2 bg-black">Update</a></th>
             </tr>
         </thead>
             <tbody>
                 <?php
+
+                    $search_query = isset($_GET['search']) ? $_GET['search'] : '';
+
                         if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
                             $id = $_GET["id"];
                     
@@ -79,20 +91,23 @@
                             }
                         }
                     $sql = "SELECT * FROM supplier";
+                    if (!empty($search_query)) {
+                        $sql .= " WHERE SupplierName LIKE '%$search_query%' OR SupplierEmail LIKE '%$search_query%'";
+                    }
                     $result = mysqli_query($conn, $sql);
 
                     if (mysqli_num_rows($result) > 0) {
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo '<tr>';
                             echo "<td class=text-center>" . $row["SupplierID"] . "</td>";
-                            echo "<td class=text-center>" . $row["SupplierName"] . "</td>";
-                            echo "<td class=text-center>" . $row["SupplierEmail"] . "</td>";
-                            echo "<td class=text-center>" . $row["ContactNum"] . "</td>";
                             echo '<td style="display: flex; justify-content: space-between; align-items: center;">';
                             $imageFilenames = explode(',', $row['supplier_image']);
                             foreach ($imageFilenames as $filename) {
                                 echo '<img src="../GearUp/uploads/' . $filename . '" width="100" height="100"  style="margin-right: 5px;">';
-                            }                           
+                            }            
+                            echo "<td class=text-center>" . $row["SupplierName"] . "</td>";
+                            echo "<td class=text-center>" . $row["SupplierEmail"] . "</td>";
+                            echo "<td class=text-center>" . $row["ContactNum"] . "</td>";               
                             echo '</td>';
                             echo '<td colspan="3" class=text-center><a href="supplier_delete.php?id=' . $row["SupplierID"] . '" class="btn btn-secondary mr-2 bg-danger">Delete</a></td>';
                             echo "</tr>";

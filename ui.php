@@ -51,6 +51,9 @@
         <div class="section-title">
           <h2>ABOUT</h2>
           <p>About Us</p>
+
+          <p1>
+Welcome to GearUp Auto Repair Services, where your vehicle's maintenance and repair needs are our top priority. At GearUp, we understand the importance of keeping your vehicle running smoothly and safely on the road. That's why we offer a comprehensive range of professional auto repair services designed to address all your automotive needs. From routine maintenance tasks like oil changes and tire rotations to complex engine repairs and diagnostics, our team of skilled technicians is dedicated to providing top-notch service with a commitment to quality and customer satisfaction. Whether you drive a car, truck, SUV, or van, you can trust GearUp Auto Repair Services to keep your vehicle in optimal condition.</p1
         </div>
 
         <!-- <div class="row">
@@ -108,13 +111,13 @@
     </section><!-- End Services Section -->
 
        <!-- ======= Portfolio Section ======= -->
-    <section id="portfolio" class="portfolio">
+    <!-- <section id="portfolio" class="portfolio">
       <div class="container" data-aos="fade-up">
 
         <div class="section-title">
           <h2>PRODUCTS</h2>
           <p>Spare Parts</p>
-        </div>
+        </div> -->
 
         <!--<div class="row" data-aos="fade-up" data-aos-delay="100">
           <div class="col-lg-12 d-flex justify-content-center">
