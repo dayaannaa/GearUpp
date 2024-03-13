@@ -45,8 +45,32 @@
 
     <section class="inner-page">
       <div class="container">
-        <p>
-        </p>
+        <h2>Welcome to GearUp Resources</h2>
+        <p>Your one-stop destination for automotive tips and advice.</p>
+
+        <img src="uploads/basic-maintenance.jpg" alt="basic-maintenance.jpg">
+    <section id="resources">
+        <article class="resource">
+            <h2 text-align="center">Basic Car Maintenance Tips & Services Checklist</h2>
+        <p>Between work, family events, and the dozens of other obligations people have, basic car maintenance can fall by the wayside. However, performing regular maintenance on your vehicle matters more than you think.</p>
+        <p>Following basic car maintenance tips may help keep your car running. But that’s not all. There are many rewarding advantages to proper car maintenance that don’t have to do with getting from point A to point B. Keeping your car maintained will help your vehicle last longer. It can even help you snag a higher resale price if you decide to sell.
+            Something as simple as checking tire pressure or washing your car can add value to your vehicle. Yes, it’s that simple! From better fuel efficiency to retaining resale value, these simple car maintenance tips can help improve your vehicle-owning experience.
+            In addition, if you drive a new Toyota, you can take advantage of ToyotaCare. Every purchased and leased new Toyota comes with the ToyotaCare scheduled maintenance plan and roadside assistance.</p>    
+    <br><hr><h2 text-align="center">1. Don’t Skip Scheduled Car Maintenance Services</h2> 
+    <p>Check your vehicle’s owner’s manual and find out when your recommended car maintenance services should be scheduled. Usually, basic car maintenance involves checking or replacing parts like spark plugs, wires, fluids, and serpentine belts. Scheduling maintenance services through your dealer may be best. There are at least three good reasons for this:</p>     
+    <p>The first reason: genuine parts and expert customer care. Your Toyota dealer will have the knowledge and parts to keep your car running well. Dealers often put a sticker on your vehicle that includes a reminder of the date of your next maintenance service. Yet, some locations will take it a step further with reminder emails about your appointment. That way, you can schedule a time that works for you and better remember the date and time of your appointment.
+      The second reason has to do with history. Going to the same Toyota dealer for maintenance means you'll have a complete service history for the vehicle. Potential buyers may consider this an added bonus when considering your vehicle for purchase.
+      The third has to do with price. A well-maintained car with up-to-date records attracts a better resale price. If you do decide to sell, you could get a much better payout.</p>
+      <img src="uploads/basic-maintenance-2.jpg" alt="basic-maintenance-2.jpg"><br><br><hr>
+      <h2 text-align="center">The Importance of Oil Changes</h2>
+      <p>As we move further away from the days of conventional motor oils, most newer vehicles no longer have to have an oil and filter change every 3,000 miles. High-efficiency engines and high-quality oil have changed the way we approach this service. Some vehicles don’t have to get an oil change more than once every 7,000 - 10,000 miles. Due to how efficient engines and motor oils have become, commonly-held advice may not be correct anymore.
+<br><br>
+Getting an oil change is a simple way to keep your vehicle in good running condition. Without clean oil to efficiently lubricate your engine’s moving parts, serious damage can occur. In fact, not maintaining the oil can void your warranty and even cause engine failure. If that happens, you’ll be spending thousands of dollars to fix the problem.
+<br><br>
+When you need to change your car’s oil depends on the type of oil you use. If your car uses conventional motor oil, it likely should be changed every 3,000 miles or 3 months. If your car has synthetic oil, it likely should be changed every 5,000-10,000 miles or 6-12 months. See your owner’s manual or contact your dealer if you are unsure of which type of oil is recommended for your specific vehicle.</p>
+    </article>
+        </section>
+
       </div>
     </section>
 
