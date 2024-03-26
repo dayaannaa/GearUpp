@@ -8,7 +8,7 @@ CREATE TABLE `super_admin_account` (
   `password` varchar(50) DEFAULT NULL
 );
 
-INSERT INTO super_admin_account VALUES (1, 'shop.owner', 'shop.owner');
+INSERT INTO super_admin_account VALUES (1, 'superadmin', 'superadmin123');
 
 CREATE TABLE `admin_account` (
   `admin_id` int PRIMARY KEY AUTO_INCREMENT,
@@ -19,7 +19,8 @@ CREATE TABLE `admin_account` (
 INSERT INTO admin_account VALUES (1, 'daniel.davis', 'admin'), 
                                  (2, 'diana.carreon', 'admin'), 
                                  (3, 'resty.cailao', 'admin'), 
-                                 (4, 'renci.baloloy', 'admin')
+                                 (4, 'renci.baloloy', 'admin'),
+                                 (5, 'admin', 'admin123')
 ;
 
 CREATE TABLE `user_info` (
