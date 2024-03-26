@@ -258,15 +258,10 @@ while ($row = $result->fetch_assoc()) {
                 </div>
                 
                 <div class="mb-3">
-                    <h5><b>Reservation Fee</b></h5>
-                    <p>Price: ₱200.00</p>
-                </div>
-                
-                <div class="mb-3">
                 <h5><b>Terms and Conditions</b></h5>
                 <p>By proceeding with this appointment, you agree to the following terms and conditions:</p>
                 <ul>
-                <li>A reservation fee of ₱200.00 is required to secure your appointment.</li>
+                <li>A reservation fee of 10% to your chosen service is required to secure your appointment.</li>
                 <li>This reservation fee is non-refundable.</li>
                 <li>If you cancel your appointment, you forfeit the reservation fee.</li>
                 </ul>
@@ -528,7 +523,7 @@ function submitForm() {
         success: function(response) {
             if (response.status) {
                 alert(response.msg);
-                window.location.href = "./event-full-calendar_user.php";
+                window.location.href = "./user_appointments.php";
             } else {
                 alert('Failed to update event name');
             }

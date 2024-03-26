@@ -309,8 +309,8 @@ function display_events() {
                     $('#edit_num_time_slots').val(event.num_time_slots);
                     
                     if (event.event_start_time && event.event_end_time) {
-                        var startTime = moment(event.event_start_time, 'HH:mm').format('HH:mm');
-                        var endTime = moment(event.event_end_time, 'HH:mm').format('HH:mm');
+                        var startTime = moment(event.event_start_time, 'HH:mm').format('h:mm A');
+                        var endTime = moment(event.event_end_time, 'HH:mm').format('h:mm A');
                         // alert(startTime + " " + endTime);
                         $('#edit_event_start_time').val(startTime);
                         $('#edit_event_end_time').val(endTime);

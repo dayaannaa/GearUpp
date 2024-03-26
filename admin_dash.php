@@ -41,6 +41,15 @@
     
 </style>
 <body>
+<?php
+    include "connection.php";
+    session_start();
+
+    if (!isset($_SESSION['admin_id'])) {
+        header("Location: user_login.php");
+        exit();
+    }
+    ?>
 
   <?php
   include "connection.php";

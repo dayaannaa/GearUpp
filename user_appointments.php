@@ -13,7 +13,16 @@
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointments</title>
-
+<!-- JS for jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- JS for full calender -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+<!-- bootstrap css and js -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="assets/vendor/aos/aos.css" rel="stylesheet">
@@ -28,6 +37,7 @@
 
 
     <link href="assets/css/style.css" rel="stylesheet">
+
 </head>
 <style>
     .table-fill { 
@@ -49,6 +59,38 @@
     }
 </style>
 <body>
+
+<!-- Modal: Terms and Conditions -->
+<div class="modal fade" id="modalTerms" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Terms and Conditions</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Include your terms and conditions content here -->
+                <label for="appointmentId">Appointment ID:</label>
+                <input type="text" id="appointmentId" name="appointmentId">
+                <p>By proceeding with this appointment, you agreed to the following terms and conditions:</p>
+                <ul>
+                    <li>A reservation fee of 10% of your chosen service is required to secure your appointment.</li>
+                    <li>This reservation fee is non-refundable.</li>
+                    <li>If you cancel your appointment, you forfeit the reservation fee.</li>
+                    <hr>
+                    <h5>Do you really want to cancel the booked slot?</h5>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary confirm-button">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     <?php
     include "sidebaruser.html";
     ?>
@@ -71,7 +113,7 @@
     $loggedInUserId = $_SESSION['user_id'];
 
     // Query for status pending
-    $sqlPending = "SELECT ce.event_start_date, ce.event_end_date, a.start_time, a.end_time, a.status 
+    $sqlPending = "SELECT ce.event_start_date, ce.event_end_date, a.start_time, a.end_time, a.status, a.appointment_id
                    FROM calendar_event_master ce 
                    INNER JOIN appointment a ON ce.event_id = a.event_id 
                    WHERE a.status = 'Pending' AND a.user_id = ?";
@@ -90,9 +132,9 @@
             
             echo "<p>Event Date: " . $row["event_start_date"] . "</p>";
             echo "<p>Time: " . $startTime . " - " . $endTime . "</p>";
-            echo "<hr>";
+            echo '<button class="btn btn-secondary mr-2 bg-danger" onclick="showModal(' . $row['appointment_id'] . ')">Cancel</button>';
         }
-    } else {
+        } else {
         echo "<p>No pending appointments found for user ID: " . $loggedInUserId . "</p>";
     }
     ?>
@@ -140,4 +182,38 @@
     </table>
 </div>
 </body>
+
+<script>
+function showModal(appointmentId) { 
+    $('#appointmentId').val(appointmentId);
+    $('#modalTerms').modal('show');
+}
+
+$(document).ready(function() {
+    $('.confirm-button').on('click', function() {
+        var appointmentId = $('#appointmentId').val();
+
+        // Send the appointment_id to the server using AJAX
+        $.ajax({
+            url: 'event_cancel_user.php', // Your PHP script that handles the cancellation process
+            method: 'POST',
+            data: { appointment_id: appointmentId },
+            success: function(response) {
+                // Handle success response from the server
+                console.log(response);
+                // Reload the page after cancellation
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                // Handle error response from the server
+                console.error(error);
+            }
+        });
+    });
+});
+
+
+
+</script>
+
 </html>

@@ -49,12 +49,21 @@
       <div class="container" data-aos="fade-up">
 
         <div class="section-title">
-          <h2>ABOUT</h2>
-          <p>About Us</p>
+          <h2>ABOUT US</h2>
 
-          <p1>
-Welcome to GearUp Auto Repair Services, where your vehicle's maintenance and repair needs are our top priority. At GearUp, we understand the importance of keeping your vehicle running smoothly and safely on the road. That's why we offer a comprehensive range of professional auto repair services designed to address all your automotive needs. From routine maintenance tasks like oil changes and tire rotations to complex engine repairs and diagnostics, our team of skilled technicians is dedicated to providing top-notch service with a commitment to quality and customer satisfaction. Whether you drive a car, truck, SUV, or van, you can trust GearUp Auto Repair Services to keep your vehicle in optimal condition.</p1
+          <p>
+Welcome to GearUp Auto Repair Services, where your vehicle's maintenance and repair needs are our top priority. At GearUp, we understand the importance of keeping your vehicle running smoothly and safely on the road. That's why we offer a comprehensive range of professional auto repair services designed to address all your automotive needs. From routine maintenance tasks like oil changes and tire rotations to complex engine repairs and diagnostics, our team of skilled technicians is dedicated to providing top-notch service with a commitment to quality and customer satisfaction. Whether you drive a car, truck, SUV, or van, you can trust GearUp Auto Repair Services to keep your vehicle in optimal condition.</p>
         </div>
+
+        <section id="resources">
+        <article class="resource">
+            <h2>Resource #1: Basic Car Maintenance Tips & Services Checklist</h2>
+            <img src="uploads/basic-maintenance.jpg" alt="">
+            <p>Between work, family events, and the dozens of other obligations people have, basic car maintenance can fall by the wayside. However, performing regular maintenance on your vehicle matters more than you think.</p>
+            <a href="resources.php">Read More</a>
+        </article>
+        <!-- Add more article elements for additional resources -->
+    </section>
 
         <!-- <div class="row">
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">

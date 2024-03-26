@@ -23,8 +23,10 @@
 			<div class="row justify-content-center">
 				<div class="col-md-12 col-lg-10">
 					<div class="wrap d-md-flex">
-						<div class="img" style="background-image: url(https://imgs.search.brave.com/mFEnaxKce2nC7raRRZ7VUb7puYhd6V898qvq6pc5RjA/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9ndHJu/aXNzYW5za3lsaW5l/LmNvbS93cC1jb250/ZW50L3VwbG9hZHMv/MjAyMy8wOS9yMzVw/aWM2LTEwMjQtNzY4/LmpwZw);">
-			      </div>
+					<video width="700px" height="470px" autoplay loop muted playsinline style="object-fit: fill;">
+    <source src="uploads/LoginVid.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
 						<div class="login-wrap p-4 p-md-5">
 			      	<div class="d-flex">
 			      		<div class="w-100">
