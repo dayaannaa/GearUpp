@@ -193,19 +193,15 @@ $(document).ready(function() {
     $('.confirm-button').on('click', function() {
         var appointmentId = $('#appointmentId').val();
 
-        // Send the appointment_id to the server using AJAX
         $.ajax({
-            url: 'event_cancel_user.php', // Your PHP script that handles the cancellation process
+            url: 'event_cancel_user.php',
             method: 'POST',
             data: { appointment_id: appointmentId },
             success: function(response) {
-                // Handle success response from the server
                 console.log(response);
-                // Reload the page after cancellation
                 location.reload();
             },
             error: function(xhr, status, error) {
-                // Handle error response from the server
                 console.error(error);
             }
         });
