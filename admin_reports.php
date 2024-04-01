@@ -63,6 +63,34 @@
         </div>
       </div>
       </div>
+
+      <div class="rowAdmins">
+        <div class="row gy-4 mt-5 justify-content-center" data-aos="zoom-in" data-aos-delay="250">
+      <div class="col-xl-3 col-md-4">
+        <div class="icon-box">
+          <span class="material-symbols-outlined text-warning col-xl-4 col-md-4">handyman</span>
+          <div class="icon-box-content">
+            <p class="text-white fs-4"></p> 
+            <h3><a href="admin_print.php" target="blank">Admins</a></h3>
+          </div>
+        </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="rowUsers">
+        <div class="row gy-4 mt-5 justify-content-center" data-aos="zoom-in" data-aos-delay="250">
+      <div class="col-xl-3 col-md-4">
+        <div class="icon-box">
+          <span class="material-symbols-outlined text-warning col-xl-4 col-md-4">handyman</span>
+          <div class="icon-box-content">
+            <p class="text-white fs-4"></p> 
+            <h3><a href="user_print.php" target="blank">Users</a></h3>
+          </div>
+        </div>
+        </div>
+      </div>
+      </div>
     </section>
     
   </main>
