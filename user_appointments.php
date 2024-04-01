@@ -72,8 +72,7 @@
             </div>
             <div class="modal-body">
                 <!-- Include your terms and conditions content here -->
-                <label for="appointmentId">Appointment ID:</label>
-                <input type="text" id="appointmentId" name="appointmentId">
+                <input type="hidden" id="appointmentId" name="appointmentId">
                 <p>By proceeding with this appointment, you agreed to the following terms and conditions:</p>
                 <ul>
                     <li>A reservation fee of 10% of your chosen service is required to secure your appointment.</li>
